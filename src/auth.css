@@ -1,0 +1,129 @@
+/* Vollbild-Hintergrund */
+.auth-screen{
+  min-height: 100svh;
+  position: relative;
+  overflow: hidden;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(1200px 700px at 50% -15%, #0f3c36 0%, #0a1f25 45%, #07121b 100%);
+  color: #e5e7eb;
+}
+
+/* dünne Deko-Linien */
+.auth-decor::before, .auth-decor::after{
+  content:"";
+  position:absolute; inset:-20% -10% auto -10%;
+  height:55%; border-radius: 9999px;
+  border:1px solid rgba(255,255,255,.06);
+  transform: rotate(-8deg);
+  pointer-events:none; z-index:0;
+}
+.auth-decor::after{
+  inset:auto -12% -10% -12%; height:50%;
+  transform: rotate(12deg);
+}
+
+/* inhaltliche Karte */
+.auth-inner{
+  position: relative;
+  z-index: 1;
+  width: 100%; max-width: 420px;
+  margin-bottom: 90px;               
+  background: rgba(8, 15, 24, 0.65);
+  border: 1px solid rgba(148,163,184,.18);
+  border-radius: 22px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.35);
+  padding: 20px 18px 18px;
+  text-align: left;
+}
+
+/* Logo mittig */
+.auth-logo-large{
+  display:block;
+  width: 92px; height: 92px; border-radius: 20px;
+  margin: -36px auto 8px;
+  box-shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+
+.auth-heading{ margin: 6px 0 4px; font-size: 22px; font-weight: 800; }
+.auth-subtle{ margin: 0 0 14px; color:#cbd5e1; font-size: 14px; }
+
+.auth-label{ display:block; font-size:12px; color:#9ca3af; margin-bottom:6px; }
+.auth-input{
+  width:100%;
+  background:#0b1220;
+  color:#e5e7eb;
+  border:1px solid #1f2937;
+  border-radius: 9999px;
+  padding: 12px 14px;
+  outline:none;
+}
+.auth-input::placeholder{ color:#64748b; }
+.auth-input:focus{ border-color:#10b981; box-shadow:0 0 0 3px rgba(16,185,129,.25); }
+
+.auth-error{ margin-top:8px; font-size:12px; color:#fecaca; }
+
+/* Grüner Floating-Action-Button unten rechts */
+.auth-fab{
+  position: fixed;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  height: 48px; padding: 0 18px;
+  display:inline-flex; align-items:center; gap:8px;
+  background:#22c55e; color:#062a2a;
+  border: none; border-radius: 9999px;
+  font-weight: 700; cursor: pointer;
+  box-shadow: 0 12px 30px rgba(34,197,94,.35);
+  z-index: 2;
+}
+.auth-fab:hover{ filter: brightness(.95); }
+.auth-fab .arrow{ font-size: 18px; line-height:1; }
+
+/* kleine Badge-Liste (wird aktuell nicht genutzt, kann bleiben) */
+.scope-list{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.scope{
+  font-size:12px; color:#cbd5e1;
+  border:1px solid rgba(148,163,184,.25);
+  background: rgba(8, 15, 24, 0.45);
+  padding:6px 10px; border-radius:9999px;
+}
+
+/* ===== Checkbox-Liste in der Karte ===== */
+.auth-checklist{
+  display: grid;
+  gap: 10px;
+  margin-top: 8px;
+}
+.auth-check{
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid rgba(148,163,184,.18);
+  background: rgba(8,15,24,.45);
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+/* Grüne Checkboxen  */
+.auth-check input[type="checkbox"]{
+  width: 18px; height: 18px;
+  accent-color: #22c55e;             
+  cursor: pointer;
+}
+
+
+
+/* sekundärer Button im Kartenfuß */
+.btn-ghost{
+  background: transparent;
+  color: #cbd5e1;
+  border: 1px solid #334155;
+  border-radius: 9999px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+.btn-ghost:hover{ filter: brightness(.95); }
+
