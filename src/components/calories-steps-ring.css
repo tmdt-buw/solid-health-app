@@ -1,0 +1,56 @@
+.ring-card{
+  background: linear-gradient(135deg, #f97316, #f59e0b);
+  color:#fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+  padding: 12px 12px 8px;
+  margin-bottom: var(--gap);
+  min-height: var(--ring-card-h);   /* <<< gleiche Höhe wie kleine Karten */
+  height: var(--ring-card-h);
+  display:flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ring-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap: nowrap;
+}
+
+.ring{
+  position: relative;
+  flex: 1 1 0;
+  max-width: calc(50% - 6px);
+  height: 100px;                /* etwas höher als Charts */
+  display:flex; align-items:center; justify-content:center;
+  min-width: 0;
+}
+
+.ring-svg{ width: 92px; height: 92px; transform: rotate(-90deg); }
+.bg{ fill:none; stroke: rgba(255,255,255,.35); stroke-width:3.6; }
+.meter{ fill:none; stroke-linecap:round; stroke-width:3.6; }
+.meter.steps{    stroke:#ffffff; }
+.meter.calories{ stroke:#1e40af; }
+
+.ring-center{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  transform: translateY(-2px); text-align:center;
+}
+.ring-icon{ display:flex; align-items:center; justify-content:center; opacity:.95; }
+.ring-number{ font-weight:800; font-size:18px; line-height:1; margin-top:2px; }
+.ring-caption{ font-size:12px; opacity:.9; margin-top:2px; }
+
+.ring-summary{
+  display:flex; justify-content:space-between;
+  font-size:12px; opacity:.95; margin-top:6px; padding:0 2px;
+}
+
+/* Kleinstgeräte: orange Karte darf die Ringe untereinander stacken */
+@media (max-width: 360px){
+  .ring-row{ flex-wrap: wrap; }
+  .ring{ max-width:100%; }
+}
