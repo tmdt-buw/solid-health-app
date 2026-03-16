@@ -1,37 +1,93 @@
+/* src/index.css */
 :root{
-  --shell-max: 420px;      
-  --gap: 12px;            
-  --nav-h: 64px;         
-  --card-h: 152px;        
-  --ring-card-h: 152px;    
+  --shell-max: 720px;
+  --gap: 12px;
+  --nav-h: 64px;
 }
 
-
-html, body, #root { height: 100%; }
-body { margin: 0; background:#0b1220; color:#e5e7eb;  padding-bottom: var(--nav-h);}
+html, body, #root {
+  height: 100%;
+}
 
 .app-shell{
   max-width: var(--shell-max);
   margin: 0 auto;
-  padding: 10px 12px calc(var(--nav-h) + 10px); /* Platz für Nav */
-  min-height: calc(100svh - var(--nav-h));      /* passt exakt unter die Nav */
+  padding: 14px 16px calc(var(--nav-h) + 14px);
+  min-height: 100vh;
   box-sizing: border-box;
 }
 
-.app-shell h1{
-  font-size: 22px;
-  margin: 6px 2px 40px;
+.app-topbar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin: 6px 0 14px;
+  padding: 14px 18px;
+
+  border-radius: 18px;
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  background: linear-gradient(90deg, #132b52 0%, #1a3c73 45%, #2456c8 100%);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.10);
 }
 
-.metric-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+.app-topbar-left{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
 }
 
-/* Mini-Charts kleiner halten */
-.metric-card-chart { height: 56px; }
+.app-topbar-dot{
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #fbbf24;
+  flex: 0 0 auto;
+  box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.16);
+}
 
-.metric-card-full { padding: 14px; border-radius: 16px; }
+.app-topbar-title{
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+}
 
-.metric-chart-popup { padding: 12px; border-radius: 14px; }
+.app-topbar-right{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-topbar-status{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.22);
+  background: rgba(255,255,255,.10);
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* responsive */
+@media (max-width: 520px){
+  .app-topbar{
+    padding: 12px 14px;
+  }
+
+  .app-topbar-title{
+    font-size: 15px;
+  }
+
+  .app-topbar-status{
+    padding: 0 10px;
+    font-size: 11px;
+  }
+}

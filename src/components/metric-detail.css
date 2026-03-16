@@ -1,41 +1,80 @@
-.mdetail{ color:#e5e7eb; }
-.mdetail-header{
-  display:flex; align-items:center; gap:10px; margin: 4px 0 8px;
+.mdetail{
+  color: var(--text);
+  display:grid;
+  gap: 12px;
 }
+
+.mdetail-header{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+}
+
 .mdetail-back{
-  background:#111827; border:1px solid #1f2937; color:#e5e7eb;
-  width:34px; height:34px; border-radius:10px; cursor:pointer;
+  width:38px;
+  height:38px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  cursor:pointer;
+  box-shadow: 0 6px 12px rgba(15,23,42,.08);
 }
-.mdetail-title{ font-size:18px; font-weight:800; }
-.mdetail-sub{ font-size:12px; color:#94a3b8; }
+.mdetail-title{ font-size:18px; font-weight: 900; }
+.mdetail-sub{ font-size:12px; color: var(--muted); font-weight:700; }
 
-.mdetail-tabs{ display:flex; gap:8px; margin: 8px 0 12px; }
-.mdetail-tabs button{
-  background:#111827; border:1px solid #1f2937; color:#cbd5e1;
-  padding:6px 10px; border-radius:9999px; cursor:pointer; font-size:12px;
-}
-.mdetail-tabs button.active{
-  background:#0ea5e9; border-color:#0284c7; color:#0b1220; font-weight:700;
-}
-
-.mdetail-chart{
-  background:#111827; border:1px solid #1f2937; border-radius:16px;
-  padding:10px; box-shadow:0 8px 24px rgba(0,0,0,.25);
-}
-
-.mdetail-header{
-  display:flex; align-items:center; gap:12px;
-  margin-bottom: 8px;
-}
 .mdetail-actions{
   margin-left:auto;
-  display:flex; gap:8px;
+  display:flex;
+  gap: 8px;
 }
 
 .btn{
-  border:1px solid #334155; background:#111827; color:#e5e7eb;
-  padding:8px 10px; border-radius:10px; font-size:13px;
+  height: 38px;
+  padding: 0 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #f1f5f9;
+  color: var(--text);
+  font-weight: 900;
+  cursor: pointer;
 }
-.btn.ghost{ background:transparent; }
-.btn.danger{ border-color:#7f1d1d; background:#1b0b0b; color:#fecaca; }
-.btn:active{ transform: translateY(1px); }
+.btn.ghost{
+  background: var(--card);
+  color: var(--primary);
+  border: 1px solid #c5dbff;
+}
+.btn.danger{
+  background: #fff1f2;
+  border: 1px solid #fecaca;
+  color: var(--danger);
+}
+
+.mdetail-tabs{
+  display:flex;
+  gap: 8px;
+}
+.mdetail-tabs button{
+  height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-weight: 900;
+  cursor: pointer;
+}
+.mdetail-tabs button.active{
+  background: var(--primary-ghost);
+  color: var(--primary);
+  border-color:#c5dbff;
+  box-shadow: 0 0 0 3px var(--ring);
+}
+
+.mdetail-chart{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 12px;
+  box-shadow: var(--shadow);
+}

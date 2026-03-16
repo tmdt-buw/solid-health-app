@@ -19,7 +19,11 @@ import GoogleConnectScreen from "./components/GoogleConnectScreen";
 import { loadFitDataFromPod, TimePoint } from "./utils/loadFitDataFromPod";
 import { getBasePodUrl } from "./utils/getBasePodUrl";
 import { syncGoogleToPod } from "./utils/syncGoogleToPod";
-import { DEFAULT_SELECTION, scopesFromSelection, MetricKey } from "./auth/fitScopes";
+import {
+  DEFAULT_SELECTION,
+  scopesFromSelection,
+  MetricKey,
+} from "./auth/fitScopes";
 import "./auth.css";
 
 const fileUrl = (base: string, name: string) => `${base}fit/${name}`;
@@ -38,7 +42,7 @@ export default function App() {
   const [googleToken, setGoogleToken] = useState<string | null>(null);
   const [podBaseUrl, setPodBaseUrl] = useState<string | null>(null);
 
-  // Daten 
+  // Daten
   const [steps, setSteps] = useState<TimePoint[]>([]);
   const [calories, setCalories] = useState<TimePoint[]>([]);
   const [sleep, setSleep] = useState<TimePoint[]>([]);
@@ -46,7 +50,7 @@ export default function App() {
   const [weight, setWeight] = useState<TimePoint[]>([]);
   const [activeTab, setActiveTab] = useState<Tab>("health");
 
-  // Nutzer-Auswahl (persistiert) 
+  // Nutzer-Auswahl 
   const [metricSel, setMetricSel] = useState<Partial<Record<MetricKey, boolean>>>(() => {
     try {
       const raw = localStorage.getItem("fitMetricSel");
@@ -59,7 +63,7 @@ export default function App() {
   // Google-Scopes (abhängig von Auswahl)
   const [scopeStr, setScopeStr] = useState<string>(() => scopesFromSelection(metricSel));
 
-  //  Session wiederherstellen 
+  // Session wiederherstellen
   useEffect(() => {
     (async () => {
       await handleIncomingRedirect({ restorePreviousSession: true });
@@ -75,22 +79,19 @@ export default function App() {
         if (savedToken) {
           setGoogleToken(savedToken);
           try {
-            // bei App-Start frisch syncen und danach TTLs laden
             await syncGoogleToPod(base, savedToken, metricSel);
           } catch (e) {
             console.warn("Start-Sync fehlgeschlagen:", e);
           }
           await loadAll(base, metricSel);
         }
-        // Wenn kein Google-Token existiert, greifen später die Guards und zeigen GoogleConnectScreen.
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  //  1) Sync triggern, sobald alles bereit ist ( nach Google-Login) 
   useEffect(() => {
     if (!webId || !podBaseUrl || !googleToken) return;
+
     (async () => {
       try {
         await syncGoogleToPod(podBaseUrl, googleToken, metricSel);
@@ -99,10 +100,9 @@ export default function App() {
       }
       await loadAll(podBaseUrl, metricSel);
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [webId, podBaseUrl, googleToken]);
 
-  // Daten laden 
+  // Daten laden
   const loadAll = async (
     baseUrl: string,
     sel: Partial<Record<MetricKey, boolean>> = metricSel
@@ -124,18 +124,24 @@ export default function App() {
         ? loadFitDataFromPod(fileUrl(baseUrl, "weight.ttl"), "weight").catch(() => [])
         : Promise.resolve([]),
     ]);
-    setSteps(s); setCalories(c); setSleep(sl); setHeartRates(hr); setWeight(wg);
+
+    setSteps(s);
+    setCalories(c);
+    setSleep(sl);
+    setHeartRates(hr);
+    setWeight(wg);
   };
 
-  // Solid Login / Logout 
+  // Solid Login / Logout
   const handleLogin = async (issuerInput?: string) => {
     const issuer =
       issuerInput && issuerInput.trim().length > 0
         ? issuerInput.trim()
         : "https://solidcommunity.net";
+
     await login({
       oidcIssuer: issuer,
-      redirectUrl: window.location.origin + "/", 
+      redirectUrl: window.location.origin + "/",
       clientName: "Solid Health App",
     });
   };
@@ -148,7 +154,7 @@ export default function App() {
     localStorage.removeItem("googleToken");
   };
 
-  // Google Login (Scopes kommen aus scopeStr) 
+  // Google Login
   const loginWithGoogle = useGoogleLogin({
     scope: scopeStr,
     onSuccess: async (resp) => {
@@ -165,13 +171,13 @@ export default function App() {
     onError: (err) => console.error("Google Login Fehler:", err),
   });
 
-  // Metrikdatei aus dem Pod löschen 
+  // Metrikdatei aus dem Pod löschen
   const deleteMetricFromPod = async (metric: MetricKey) => {
     if (!podBaseUrl) return;
+
     const url = fileUrl(podBaseUrl, METRIC_FILE[metric]);
     await deleteFile(url, { fetch: getDefaultSession().fetch });
 
-    // Auswahl deaktivieren --> Kachel verschwindet sofort
     setMetricSel((prev) => {
       const next = { ...prev, [metric]: false };
       localStorage.setItem("fitMetricSel", JSON.stringify(next));
@@ -179,21 +185,30 @@ export default function App() {
     });
 
     switch (metric) {
-      case "steps": setSteps([]); break;
-      case "calories": setCalories([]); break;
-      case "sleep": setSleep([]); break;
-      case "heartRate": setHeartRates([]); break;
-      case "weight": setWeight([]); break;
+      case "steps":
+        setSteps([]);
+        break;
+      case "calories":
+        setCalories([]);
+        break;
+      case "sleep":
+        setSleep([]);
+        break;
+      case "heartRate":
+        setHeartRates([]);
+        break;
+      case "weight":
+        setWeight([]);
+        break;
     }
   };
 
-  //  Google trennen 
+  // Google trennen
   const disconnectGoogle = async () => {
     setGoogleToken(null);
     localStorage.removeItem("googleToken");
   };
 
-  // Google-Scopes ändern und Flow starten 
   const startGoogleLoginWith = (sel: Partial<Record<MetricKey, boolean>>) => {
     setMetricSel(sel);
     localStorage.setItem("fitMetricSel", JSON.stringify(sel));
@@ -204,12 +219,10 @@ export default function App() {
 
   // Screens
   if (!webId) {
-    // Nutzer ist noch nicht bei Solid eingeloggt → LoginScreen
     return <LoginScreen onSolidLogin={handleLogin} />;
   }
 
   if (webId && !googleToken) {
-    // Solid ok, Google fehlt → sofort Scopes/Verbinden zeigen
     return (
       <GoogleConnectScreen
         initial={metricSel}
@@ -219,11 +232,18 @@ export default function App() {
     );
   }
 
-  // Haupt-App 
   return (
     <BrowserRouter>
       <div className="app-shell">
-        <h1 className="app-title">Solid Health App</h1>
+        <div className="app-topbar">
+          <div className="app-topbar-left">
+            <h1 className="app-topbar-title">Solid Health App</h1>
+          </div>
+
+          <div className="app-topbar-right">
+            <span className="app-topbar-status">Connected</span>
+          </div>
+        </div>
 
         <Routes>
           <Route
