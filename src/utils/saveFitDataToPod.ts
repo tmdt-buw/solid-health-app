@@ -1,10 +1,7 @@
-// src/utils/saveFitDataToPod.ts
 import { overwriteFile } from "@inrupt/solid-client";
-import { Session } from "@inrupt/solid-client-authn-browser";
 
 const NS = "http://example.org/health#";
 
-/** Ziel-URL für die Datei im Pod */
 const getFileUrl = (podBaseUrl: string, filename: string) =>
   `${podBaseUrl}fit/${filename}`;
 
@@ -14,13 +11,11 @@ const daysAgoISO = (days: number): string => {
   return date.toISOString();
 };
 
-/** Nur letzte 90 Tage durchlassen */
 const filterLast90Days = (data: { timestamp: string; value: number }[]) => {
   const limit = new Date(daysAgoISO(90)).getTime();
   return data.filter((e) => new Date(e.timestamp).getTime() >= limit);
 };
 
-/** Turtle mit BENANNTEN Subjects erzeugen */
 const generateTurtle = (
   data: { timestamp: string; value: number }[],
   predicate: string
@@ -45,7 +40,7 @@ const generateTurtle = (
 };
 
 export const saveFitDataToPod = async (
-  session: Session,
+  fetcher: typeof fetch,
   podBaseUrl: string,
   filename: string,
   predicate: string,
@@ -58,10 +53,11 @@ export const saveFitDataToPod = async (
   try {
     await overwriteFile(fileUrl, new Blob([turtle], { type: "text/turtle" }), {
       contentType: "text/turtle",
-      fetch: session.fetch,
+      fetch: fetcher,
     });
     console.log(`✅ ${filename} erfolgreich gespeichert (${recentData.length} Einträge).`);
   } catch (err: any) {
     console.error(`❌ Fehler beim Speichern von ${filename}:`, err?.message ?? err);
+    throw err;
   }
 };

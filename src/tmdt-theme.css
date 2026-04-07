@@ -1,0 +1,98 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap");
+
+:root{
+  --primary:#1d4ed8;
+  --primary-ghost:#eaf2ff;
+  --text:#0f172a;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --danger:#b42318;
+
+  --bg:#f8fafc;
+  --card:#ffffff;
+
+  --shadow:0 18px 40px rgba(15,23,42,.08);
+  --shadow-strong:0 26px 60px rgba(15,23,42,.12);
+  --ring:rgba(59,130,246,.15);
+
+  --radius:18px;
+  --radius-lg:22px;
+}
+
+/* Base */
+html, body, #root{ height:100%; }
+body{
+  margin:0;
+  font-family:"Manrope","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+.tmdt-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+}
+
+.tmdt-card--soft{
+  background:linear-gradient(135deg,#ffffff 0%, #f8fafc 100%);
+}
+
+.tmdt-input{
+  width:100%;
+  height:44px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--text);
+  padding:0 14px;
+  outline:none;
+  box-sizing:border-box;
+}
+.tmdt-input:focus{
+  border-color:#b9d4ff;
+  box-shadow:0 0 0 4px var(--ring);
+}
+
+.tmdt-label{
+  display:block;
+  font-size:12px;
+  color:var(--muted);
+  font-weight:700;
+  margin-bottom:6px;
+}
+
+.tmdt-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.5rem;
+  height:44px;
+  padding:0 14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#f1f5f9;
+  color:var(--text);
+  font-weight:800;
+  cursor:pointer;
+}
+.tmdt-btn:hover{ transform: translateY(-1px); }
+.tmdt-btn:active{ transform: translateY(0px); }
+
+.tmdt-btn--primary{
+  border:none;
+  color:#fff;
+  background:linear-gradient(120deg,#1d4ed8 0%, #2563eb 100%);
+  box-shadow:0 12px 30px rgba(37,99,235,.18);
+}
+.tmdt-btn--ghost{
+  background:var(--card);
+  color:var(--primary);
+  border:1px solid #c5dbff;
+}
+.tmdt-btn--danger{
+  background:#fff1f2;
+  border:1px solid #fecaca;
+  color:var(--danger);
+}

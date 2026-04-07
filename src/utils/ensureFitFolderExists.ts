@@ -1,19 +1,23 @@
 import { getResourceInfo, createContainerAt } from "@inrupt/solid-client";
-import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
 
-export async function ensureFitFolderExists(podBaseUrl: string) {
+export async function ensureFitFolderExists(
+  podBaseUrl: string,
+  fetcher: typeof fetch
+) {
   const folderUrl = `${podBaseUrl}fit/`;
 
   try {
-    await getResourceInfo(folderUrl, { fetch: getDefaultSession().fetch });
+    await getResourceInfo(folderUrl, { fetch: fetcher });
     console.log("📁 'fit/' Ordner existiert bereits");
   } catch (e: any) {
-    if (e.statusCode === 404) {
-      await createContainerAt(folderUrl, { fetch: getDefaultSession().fetch });
+    const status = e?.statusCode ?? e?.status;
+
+    if (status === 404) {
+      await createContainerAt(folderUrl, { fetch: fetcher });
       console.log("✅ 'fit/' Ordner neu erstellt");
     } else {
       console.error("❌ Fehler beim Erstellen des 'fit/' Ordners:", e);
+      throw e;
     }
   }
 }
-

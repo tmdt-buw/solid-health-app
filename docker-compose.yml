@@ -1,0 +1,17 @@
+  solid-health-app:
+    build:
+      context: C:/solid-health-app
+    restart: unless-stopped
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    volumes:
+      - C:/solid-health-app:/app:delegated
+      - /app/node_modules
+    expose: ["3000"]
+    networks:
+      solid-dataspace:
+        aliases:
+          - solid-dataspace-dev-solid-health-app

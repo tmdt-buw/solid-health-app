@@ -1,3 +1,4 @@
+//CalrieStepsRing.tsx
 import React from "react";
 import "./calories-steps-ring.css";
 
