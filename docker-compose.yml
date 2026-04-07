@@ -1,6 +1,7 @@
   solid-health-app:
     build:
       context: C:/solid-health-app
+      dockerfile: Dockerfile.dev
     restart: unless-stopped
     environment:
       - HOST=0.0.0.0

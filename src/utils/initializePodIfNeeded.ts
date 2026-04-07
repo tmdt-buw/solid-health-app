@@ -12,11 +12,11 @@ const fileUrl = (base: string, name: string) => `${base}fit/${name}`;
 export async function initializePodIfNeeded(
   podBaseUrl: string,
   googleToken: string,
-  selected: Partial<Record<MetricKey, boolean>>, 
-  seedIfMissing: boolean                           
+  selected: Partial<Record<MetricKey, boolean>>,
+  seedIfMissing: boolean
 ) {
-  const session = getDefaultSession();
-  await ensureFitFolderExists(podBaseUrl);
+  const fetcher = getDefaultSession().fetch;
+  await ensureFitFolderExists(podBaseUrl, fetcher);
 
 
 if (seedIfMissing) {
@@ -31,11 +31,11 @@ if (seedIfMissing) {
     }));
 
     const jobs: Promise<any>[] = [];
-    if (selected.steps)     jobs.push(saveFitDataToPod(session, podBaseUrl, "steps.ttl", "steps", steps));
-    if (selected.calories)  jobs.push(saveFitDataToPod(session, podBaseUrl, "calories.ttl", "calories", calories));
-    if (selected.heartRate) jobs.push(saveFitDataToPod(session, podBaseUrl, "heartRates.ttl", "heartRate", heartRates));
-    if (selected.weight)    jobs.push(saveFitDataToPod(session, podBaseUrl, "weight.ttl", "weight", weights));
-    if (selected.sleep)     jobs.push(saveFitDataToPod(session, podBaseUrl, "sleep.ttl", "sleepHours", sleep));
+    if (selected.steps)     jobs.push(saveFitDataToPod(fetcher, podBaseUrl, "steps.ttl", "steps", steps));
+    if (selected.calories)  jobs.push(saveFitDataToPod(fetcher, podBaseUrl, "calories.ttl", "calories", calories));
+    if (selected.heartRate) jobs.push(saveFitDataToPod(fetcher, podBaseUrl, "heartRates.ttl", "heartRate", heartRates));
+    if (selected.weight)    jobs.push(saveFitDataToPod(fetcher, podBaseUrl, "weight.ttl", "weight", weights));
+    if (selected.sleep)     jobs.push(saveFitDataToPod(fetcher, podBaseUrl, "sleep.ttl", "sleepHours", sleep));
 
     await Promise.all(jobs);
   } catch (e) {
