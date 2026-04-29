@@ -3,7 +3,7 @@ import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
 import { MetricKey, metricFileName } from "./metricFiles";
 
 export async function deleteMetricFile(podBaseUrl: string, metric: MetricKey) {
-  const url = `${podBaseUrl}fit/${metricFileName[metric]}`;
+  const url = `${podBaseUrl}health/${metricFileName[metric]}`;
   try {
     await deleteFile(url, { fetch: getDefaultSession().fetch });
     console.log("✅ gelöscht:", url);

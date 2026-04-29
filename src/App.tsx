@@ -23,6 +23,7 @@ import {
   scopesFromSelection,
   MetricKey,
 } from "./auth/fitScopes";
+import { appVersion } from "./version";
 import "./auth.css";
 
 const AUTH_BRIDGE_KEY = "__SOLID_DATASPACE_AUTH__";
@@ -45,7 +46,7 @@ type HostAuthBridge = {
   logout?: () => Promise<void>;
 };
 
-const fileUrl = (base: string, name: string) => `${base}fit/${name}`;
+const fileUrl = (base: string, name: string) => `${base}health/${name}`;
 
 const METRIC_FILE: Record<MetricKey, string> = {
   steps: "steps.ttl",
@@ -208,7 +209,7 @@ export default function App() {
       try {
         await syncGoogleToPod(podBaseUrl, googleToken, metricSel, solidFetch);
       } catch (e) {
-        console.warn("Sync nach Login fehlgeschlagen:", e);
+        console.warn("Sync after login failed:", e);
       }
 
       await loadAll(podBaseUrl, solidFetch, metricSel);
@@ -268,7 +269,7 @@ export default function App() {
         await loadAll(podBaseUrl, solidFetch, metricSel);
       }
     },
-    onError: (err) => console.error("Google Login Fehler:", err),
+    onError: (err) => console.error("Google login failed:", err),
   });
 
   const deleteMetricFromPod = async (metric: MetricKey) => {
@@ -359,16 +360,19 @@ export default function App() {
 
   return (
     <BrowserRouter basename="/solid-health-app">
-      <div className="app-shell">
-        <div className="app-topbar">
-          <div className="app-topbar-left">
-            <h1 className="app-topbar-title">Solid Health App</h1>
-          </div>
+      <div className={`app-shell${embeddedMode ? " app-shell--embedded" : ""}`}>
+        {!embeddedMode && (
+          <div className="app-topbar">
+            <div className="app-topbar-left">
+              <h1 className="app-topbar-title">Solid Health App</h1>
+            </div>
 
-          <div className="app-topbar-right">
-            <span className="app-topbar-status">Connected</span>
+            <div className="app-topbar-right">
+              <span className="app-topbar-status">Connected</span>
+              <span className="app-topbar-version">{appVersion}</span>
+            </div>
           </div>
-        </div>
+        )}
 
         <Routes>
           <Route

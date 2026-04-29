@@ -61,8 +61,8 @@ export default function CaloriesStepsRing({
 
           <div className="ring-center">
             <span className="ring-icon"><ShoeIcon/></span>
-            <div className="ring-number">{Math.round(steps).toLocaleString("de-DE")}</div>
-            <div className="ring-caption">Schritte</div>
+            <div className="ring-number">{Math.round(steps).toLocaleString("en-US")}</div>
+            <div className="ring-caption">Steps</div>
           </div>
         </div>
 
@@ -82,15 +82,15 @@ export default function CaloriesStepsRing({
 
           <div className="ring-center">
             <span className="ring-icon"><FlameIcon/></span>
-            <div className="ring-number">{Math.round(calories).toLocaleString("de-DE")}</div>
-            <div className="ring-caption">Kalorien</div>
+            <div className="ring-number">{Math.round(calories).toLocaleString("en-US")}</div>
+            <div className="ring-caption">Calories</div>
           </div>
         </div>
       </div>
 
       <div className="ring-summary">
-        <span>👟 Ziel: {stepGoal.toLocaleString("de-DE")} Schritte</span>
-        <span>🔥 Ziel: {calorieGoal.toLocaleString("de-DE")} kcal</span>
+        <span>Step goal: {stepGoal.toLocaleString("en-US")}</span>
+        <span>Calorie goal: {calorieGoal.toLocaleString("en-US")} kcal</span>
       </div>
     </div>
   );

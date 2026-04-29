@@ -1,5 +1,5 @@
 import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
-import { ensureFitFolderExists } from "./ensureFitFolderExists";
+import { ensureHealthFolderExists } from "./ensureHealthFolderExists";
 import { saveFitDataToPod } from "./saveFitDataToPod";
 import { fetchGeneralFitData } from "../services/googleFit/fetchGeneralFitData";
 import { fetchSleepData } from "../services/googleFit/fetchSleepData";
@@ -7,7 +7,7 @@ import { processFitData } from "../services/googleFit/processFitData";
 import { processSleepData } from "../services/googleFit/processSleepData";
 import { MetricKey } from "../auth/fitScopes";
 
-const fileUrl = (base: string, name: string) => `${base}fit/${name}`;
+const fileUrl = (base: string, name: string) => `${base}health/${name}`;
 
 export async function initializePodIfNeeded(
   podBaseUrl: string,
@@ -16,7 +16,7 @@ export async function initializePodIfNeeded(
   seedIfMissing: boolean
 ) {
   const fetcher = getDefaultSession().fetch;
-  await ensureFitFolderExists(podBaseUrl, fetcher);
+  await ensureHealthFolderExists(podBaseUrl, fetcher);
 
 
 if (seedIfMissing) {

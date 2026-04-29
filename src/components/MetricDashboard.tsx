@@ -1,4 +1,4 @@
-// src/components/MetricDashboard.tsx
+﻿// src/components/MetricDashboard.tsx
 import React, { useState } from "react";
 import MetricCard from "./MetricCard";
 import MetricChart from "./MetricChart";
@@ -25,7 +25,7 @@ const MetricDashboard: React.FC<Props> = ({
   const [activeMetric, setActiveMetric] = useState<MetricType>(null);
 
   const latestValue = (arr: TimePoint[]) =>
-    arr.length ? arr[arr.length - 1].value.toFixed(2) : "—";
+    arr.length ? arr[arr.length - 1].value.toFixed(2) : "-";
   const latestDate = (arr: TimePoint[]) =>
     arr.length ? arr[arr.length - 1].timestamp.slice(0, 10) : "";
 
@@ -52,15 +52,15 @@ const MetricDashboard: React.FC<Props> = ({
   const getLabel = () => {
     switch (activeMetric) {
       case "steps":
-        return { title: "Schritte", unit: "St" };
+        return { title: "Steps", unit: "" };
       case "calories":
-        return { title: "Kalorien", unit: "kcal" };
+        return { title: "Calories", unit: "kcal" };
       case "sleep":
-        return { title: "Schlaf", unit: "h" };
+        return { title: "Sleep", unit: "h" };
       case "heartRate":
-        return { title: "Herzfrequenz", unit: "bpm" };
+        return { title: "Heart rate", unit: "bpm" };
       case "weight":              
-        return { title: "Gewicht", unit: "kg" };
+        return { title: "Weight", unit: "kg" };
       default:
         return { title: "", unit: "" };
     }
@@ -70,14 +70,14 @@ const MetricDashboard: React.FC<Props> = ({
     <div className="metric-dashboard">
       <div className="metric-grid">
         <MetricCard
-          title="Schritte"
+          title="Steps"
           value={latestValue(steps)}
-          unit="St"
+          unit=""
           date={latestDate(steps)}
           onClick={() => setActiveMetric("steps")}
         />
         <MetricCard
-          title="Kalorien"
+          title="Calories"
           value={latestValue(calories)}
           unit="kcal"
           date={latestDate(calories)}
@@ -85,21 +85,21 @@ const MetricDashboard: React.FC<Props> = ({
         />
         <MetricCard
           className="sleep-card" 
-          title="Schlaf"
+          title="Sleep"
           value={latestValue(sleep)}
           unit="h"
           date={latestDate(sleep)}
           onClick={() => setActiveMetric("sleep")}
         />
         <MetricCard
-          title="Puls"
+          title="Heart rate"
           value={latestValue(heartRates)}
           unit="bpm"
           date={latestDate(heartRates)}
           onClick={() => setActiveMetric("heartRate")}
         />
         <MetricCard
-          title="Gewicht"
+          title="Weight"
           value={latestValue(weight)}   
           unit="kg"
           date={latestDate(weight)}      
@@ -110,7 +110,7 @@ const MetricDashboard: React.FC<Props> = ({
 
       {activeMetric && (
         <div className="metric-chart-popup">
-          <button className="close-btn" onClick={() => setActiveMetric(null)}>✕</button>
+          <button className="close-btn" onClick={() => setActiveMetric(null)}>âœ•</button>
           <MetricChart data={getData()} title={getLabel().title} unit={getLabel().unit} />
         </div>
       )}
@@ -119,3 +119,4 @@ const MetricDashboard: React.FC<Props> = ({
 };
 
 export default MetricDashboard;
+

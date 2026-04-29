@@ -1,22 +1,22 @@
 import { getResourceInfo, createContainerAt } from "@inrupt/solid-client";
 
-export async function ensureFitFolderExists(
+export async function ensureHealthFolderExists(
   podBaseUrl: string,
   fetcher: typeof fetch
 ) {
-  const folderUrl = `${podBaseUrl}fit/`;
+  const folderUrl = `${podBaseUrl}health/`;
 
   try {
     await getResourceInfo(folderUrl, { fetch: fetcher });
-    console.log("📁 'fit/' Ordner existiert bereits");
+    console.log("'health/' folder already exists");
   } catch (e: any) {
     const status = e?.statusCode ?? e?.status;
 
     if (status === 404) {
       await createContainerAt(folderUrl, { fetch: fetcher });
-      console.log("✅ 'fit/' Ordner neu erstellt");
+      console.log("'health/' folder created");
     } else {
-      console.error("❌ Fehler beim Erstellen des 'fit/' Ordners:", e);
+      console.error("Error creating 'health/' folder:", e);
       throw e;
     }
   }

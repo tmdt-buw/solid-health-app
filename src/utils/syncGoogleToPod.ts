@@ -1,5 +1,5 @@
 import { saveFitDataToPod } from "./saveFitDataToPod";
-import { ensureFitFolderExists } from "./ensureFitFolderExists";
+import { ensureHealthFolderExists } from "./ensureHealthFolderExists";
 
 import { fetchGeneralFitData } from "../services/googleFit/fetchGeneralFitData";
 import { fetchSleepData } from "../services/googleFit/fetchSleepData";
@@ -13,7 +13,7 @@ export async function syncGoogleToPod(
   selected: Partial<Record<MetricKey, boolean>>,
   fetcher: typeof fetch
 ) {
-  await ensureFitFolderExists(podBaseUrl, fetcher);
+  await ensureHealthFolderExists(podBaseUrl, fetcher);
 
   const rawFit = await fetchGeneralFitData(googleToken).catch(() => null);
   const rawSleep = selected.sleep

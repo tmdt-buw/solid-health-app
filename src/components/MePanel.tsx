@@ -1,4 +1,3 @@
-// src/components/MePanel.tsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { TimePoint } from "../utils/loadFitDataFromPod";
 import { computeKpis } from "../utils/computeKpis";
@@ -27,15 +26,15 @@ type Profile = {
 
 const LS_KEY = "me.profile.v1";
 
-const nf0 = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
-const nf1 = new Intl.NumberFormat("de-DE", {
+const nf0 = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
+const nf1 = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
   maximumFractionDigits: 1,
 });
 
 const format = {
-  int: (v?: number, unit = "") => (v == null ? "—" : `${nf0.format(v)}${unit}`),
-  one: (v?: number, unit = "") => (v == null ? "—" : `${nf1.format(v)}${unit}`),
+  int: (v?: number, unit = "") => (v == null ? "-" : `${nf0.format(v)}${unit}`),
+  one: (v?: number, unit = "") => (v == null ? "-" : `${nf1.format(v)}${unit}`),
 };
 
 const MePanel: React.FC<Props> = ({
@@ -49,13 +48,12 @@ const MePanel: React.FC<Props> = ({
   weight = [],
   heartRates = [],
 }) => {
-  // Profile-State mit localStorage-Persistenz
   const [profile, setProfile] = useState<Profile>(() => {
     try {
       const raw = localStorage.getItem(LS_KEY);
-      return raw ? JSON.parse(raw) : { name: "Dein Name", heightCm: 175 };
+      return raw ? JSON.parse(raw) : { name: "Your name", heightCm: 175 };
     } catch {
-      return { name: "Dein Name", heightCm: 175 };
+      return { name: "Your name", heightCm: 175 };
     }
   });
 
@@ -63,7 +61,6 @@ const MePanel: React.FC<Props> = ({
     localStorage.setItem(LS_KEY, JSON.stringify(profile));
   }, [profile]);
 
-  // Avatar Upload
   const fileRef = useRef<HTMLInputElement | null>(null);
   const onPickAvatar = () => fileRef.current?.click();
 
@@ -78,7 +75,6 @@ const MePanel: React.FC<Props> = ({
     reader.readAsDataURL(f);
   };
 
-  // KPIs (7-Tage-Durchschnitt)
   const kpis = useMemo(
     () =>
       computeKpis(
@@ -92,7 +88,6 @@ const MePanel: React.FC<Props> = ({
     [steps, calories, sleep, weight, heartRates, profile.heightCm]
   );
 
-  // Gewicht: Google → sonst manuell
   const displayWeightRaw = kpis.weightNow ?? profile.weightManual;
   const displayWeight = displayWeightRaw == null ? undefined : Number(displayWeightRaw);
 
@@ -112,7 +107,7 @@ const MePanel: React.FC<Props> = ({
         <div
           className="me-avatar-wrap"
           onClick={onPickAvatar}
-          title="Profilbild ändern"
+          title="Change profile picture"
           role="button"
           tabIndex={0}
           onKeyDown={(e) => {
@@ -125,7 +120,7 @@ const MePanel: React.FC<Props> = ({
             <div className="me-avatar placeholder">+</div>
           )}
 
-          {!profile.avatarDataUrl && <div className="me-avatar-fab">Foto</div>}
+          {!profile.avatarDataUrl && <div className="me-avatar-fab">Photo</div>}
 
           <input
             ref={fileRef}
@@ -141,15 +136,15 @@ const MePanel: React.FC<Props> = ({
             className="me-name-input"
             value={profile.name}
             onChange={(e) => setProfile((p) => ({ ...p, name: e.target.value }))}
-            placeholder="Dein Name"
+            placeholder="Your name"
           />
-          <div className="me-subtle">Persönliches Profil</div>
+          <div className="me-subtle">Personal profile</div>
         </div>
 
         <div className="me-quick-stats">
           <div className="me-qs">
             <div className="me-qs-num">{format.int(profile.age)}</div>
-            <div className="me-qs-cap">Alter</div>
+            <div className="me-qs-cap">Age</div>
           </div>
 
           <div className="me-qs">
@@ -159,48 +154,46 @@ const MePanel: React.FC<Props> = ({
 
           <div className="me-qs">
             <div className="me-qs-num">{format.int(profile.heightCm, " cm")}</div>
-            <div className="me-qs-cap">Größe</div>
+            <div className="me-qs-cap">Height</div>
           </div>
 
           <div className="me-qs">
             <div className="me-qs-num">{format.one(displayWeight, " kg")}</div>
-            <div className="me-qs-cap">Gewicht</div>
+            <div className="me-qs-cap">Weight</div>
           </div>
         </div>
       </div>
 
-      {/* Formular */}
       <div className="me-card form">
         <div className="me-field">
-          <label>Alter</label>
+          <label>Age</label>
           <input
             type="number"
             inputMode="numeric"
-            placeholder="z. B. 30"
+            placeholder="e.g. 30"
             value={profile.age ?? ""}
             onChange={updateNumber("age")}
           />
         </div>
 
         <div className="me-field">
-          <label>Größe (cm)</label>
+          <label>Height (cm)</label>
           <input
             type="number"
             inputMode="numeric"
-            placeholder="z. B. 175"
+            placeholder="e.g. 175"
             value={profile.heightCm ?? ""}
             onChange={updateNumber("heightCm")}
           />
         </div>
 
-        {/* Gewicht: nur editierbar, wenn kein Google-Wert da */}
         <div className="me-field">
-          <label>Gewicht (kg)</label>
+          <label>Weight (kg)</label>
           <input
             type="number"
             inputMode="decimal"
             step="0.1"
-            placeholder={kpis.weightNow != null ? "aus Google Fit" : "z. B. 72.5"}
+            placeholder={kpis.weightNow != null ? "from Google Fit" : "e.g. 72.5"}
             value={
               kpis.weightNow != null
                 ? String(Math.round(kpis.weightNow * 10) / 10)
@@ -211,37 +204,34 @@ const MePanel: React.FC<Props> = ({
           />
         </div>
 
-        {/* WebID über volle Breite */}
         <div className="me-field span-2">
           <label>Solid WebID</label>
-          <input readOnly value={webId ?? "—"} />
+          <input readOnly value={webId ?? "-"} />
         </div>
       </div>
 
-      {/* KPIs Card */}
       <div className="me-card kpis">
         <div className="kpi">
           <div className="kpi-val">{format.int(kpis.stepsAvg7)}</div>
-          <div className="kpi-cap">Ø Schritte (7T)</div>
+          <div className="kpi-cap">Avg steps (7d)</div>
         </div>
 
         <div className="kpi">
           <div className="kpi-val">{format.int(kpis.kcalAvg7, " kcal")}</div>
-          <div className="kpi-cap">Ø Kalorien (7T)</div>
+          <div className="kpi-cap">Avg calories (7d)</div>
         </div>
 
         <div className="kpi">
           <div className="kpi-val">{format.one(kpis.sleepAvg7, " h")}</div>
-          <div className="kpi-cap">Ø Schlaf (7T)</div>
+          <div className="kpi-cap">Avg sleep (7d)</div>
         </div>
 
         <div className="kpi">
           <div className="kpi-val">{format.one(kpis.heartNow, " bpm")}</div>
-          <div className="kpi-cap">Puls (letzter)</div>
+          <div className="kpi-cap">Latest heart rate</div>
         </div>
       </div>
 
-      {/* Buttons (Theme) */}
       <div className="me-actions">
         <button className="tmdt-btn tmdt-btn--primary" onClick={onSolidLogout}>
           Solid Logout
@@ -257,3 +247,4 @@ const MePanel: React.FC<Props> = ({
 };
 
 export default MePanel;
+

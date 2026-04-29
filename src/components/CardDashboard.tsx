@@ -51,9 +51,9 @@ const CardDashboard: React.FC<Props> = ({
       <div className="metric-grid">
         {show("steps", steps) && (
           <MetricCard
-            title="Schritte"
+            title="Steps"
             value={latestValue(steps)}
-            unit="St"
+            unit=""
             date={latestDate(steps)}
             data={steps}
             onClick={() => navigate("/detail/steps")}
@@ -62,7 +62,7 @@ const CardDashboard: React.FC<Props> = ({
 
         {show("calories", calories) && (
           <MetricCard
-            title="Kalorien"
+            title="Calories"
             value={latestValue(calories)}
             unit="kcal"
             date={latestDate(calories)}
@@ -73,7 +73,7 @@ const CardDashboard: React.FC<Props> = ({
 
         {show("sleep", sleep) && (
           <MetricCard
-            title="Schlaf"
+            title="Sleep"
             value={latestValue(sleep)}
             unit="h"
             date={latestDate(sleep)}
@@ -84,7 +84,7 @@ const CardDashboard: React.FC<Props> = ({
 
         {show("heartRate", heartRates) && (
           <MetricCard
-            title="Puls"
+            title="Heart rate"
             value={latestValue(heartRates)}
             unit="bpm"
             date={latestDate(heartRates)}
@@ -95,7 +95,7 @@ const CardDashboard: React.FC<Props> = ({
 
         {show("weight", weight) && (
           <MetricCard
-            title="Gewicht"
+            title="Weight"
             value={latestValue(weight)}
             unit="kg"
             date={latestDate(weight)}

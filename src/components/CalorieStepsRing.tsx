@@ -1,4 +1,3 @@
-//CalrieStepsRing.tsx
 import React from "react";
 import "./calories-steps-ring.css";
 
@@ -24,7 +23,8 @@ const FlameIcon = () => (
   </svg>
 );
 
-const percent = (v: number, goal: number) => Math.min(100, Math.max(0, (v / goal) * 100));
+const percent = (value: number, goal: number) =>
+  Math.min(100, Math.max(0, (value / goal) * 100));
 
 const CalorieStepsRing: React.FC<Props> = ({
   steps,
@@ -33,12 +33,11 @@ const CalorieStepsRing: React.FC<Props> = ({
   calorieGoal = 2500,
 }) => {
   const stepPct = percent(steps, stepGoal);
-  const calPct  = percent(calories, calorieGoal);
+  const calPct = percent(calories, calorieGoal);
 
   return (
     <div className="ring-card">
       <div className="ring-row">
-        {/* Schritte */}
         <div className="ring">
           <svg viewBox="0 0 36 36" className="ring-svg">
             <path className="bg" d="M18 2.0845 a 15.9155 15.9155 0 1 1 0 31.831 a 15.9155 15.9155 0 1 1 0 -31.831" />
@@ -47,13 +46,12 @@ const CalorieStepsRing: React.FC<Props> = ({
           </svg>
 
           <div className="ring-center">
-            <span className="ring-icon shoe"><ShoeIcon/></span>
+            <span className="ring-icon shoe"><ShoeIcon /></span>
             <div className="ring-number">{Math.floor(steps).toLocaleString()}</div>
-            <div className="ring-caption">Schritte</div>
+            <div className="ring-caption">Steps</div>
           </div>
         </div>
 
-        {/* Kalorien */}
         <div className="ring">
           <svg viewBox="0 0 36 36" className="ring-svg">
             <path className="bg" d="M18 2.0845 a 15.9155 15.9155 0 1 1 0 31.831 a 15.9155 15.9155 0 1 1 0 -31.831" />
@@ -62,16 +60,16 @@ const CalorieStepsRing: React.FC<Props> = ({
           </svg>
 
           <div className="ring-center">
-            <span className="ring-icon flame"><FlameIcon/></span>
+            <span className="ring-icon flame"><FlameIcon /></span>
             <div className="ring-number">{Math.floor(calories).toLocaleString()}</div>
-            <div className="ring-caption">Kalorien</div>
+            <div className="ring-caption">Calories</div>
           </div>
         </div>
       </div>
 
       <div className="ring-summary">
-        <span>👟 Ziel: {stepGoal.toLocaleString()} Schritte</span>
-        <span>🔥 Ziel: {calorieGoal.toLocaleString()} kcal</span>
+        <span>Step goal: {stepGoal.toLocaleString()}</span>
+        <span>Calorie goal: {calorieGoal.toLocaleString()} kcal</span>
       </div>
     </div>
   );

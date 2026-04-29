@@ -24,7 +24,7 @@ const isHeart = (title: string, unit?: string) =>
 const isSleep = (title: string, unit?: string) =>
   unit?.toLowerCase() === "h" || /sleep|schlaf/i.test(title);
 const isSteps = (title: string, unit?: string) =>
-  unit?.toLowerCase() === "st" || /steps|schritte|exercise/i.test(title);
+  /steps|exercise/i.test(title);
 const isWeight = (title: string, unit?: string) =>
   unit?.toLowerCase() === "kg" || /weight|gewicht/i.test(title);
 
@@ -99,7 +99,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
                 <XAxis hide dataKey="timestamp" />
                 <YAxis hide domain={["dataMin-5", "dataMax+5"]} />
                 <Tooltip
-                  formatter={(v: any) => [`${v} bpm`, "Puls"]}
+                  formatter={(v: any) => [`${v} bpm`, "Heart rate"]}
                   labelFormatter={(l) => new Date(String(l)).toLocaleDateString()}
                 />
                 <Area
@@ -123,7 +123,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
                 <XAxis hide dataKey="timestamp" />
                 <YAxis hide />
                 <Tooltip
-                  formatter={(v: any) => [`${v}`, "Schritte"]}
+                  formatter={(v: any) => [`${v}`, "Steps"]}
                   labelFormatter={(l) => new Date(String(l)).toLocaleDateString()}
                 />
                 <Line
@@ -152,7 +152,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
                 <XAxis hide dataKey="timestamp" />
                 <YAxis hide domain={["dataMin-1", "dataMax+1"]} />
                 <Tooltip
-                  formatter={(v: any) => [`${v} kg`, "Gewicht"]}
+                  formatter={(v: any) => [`${v} kg`, "Weight"]}
                   labelFormatter={(l) => new Date(String(l)).toLocaleDateString()}
                 />
                 {/* weicher Schatten */}
