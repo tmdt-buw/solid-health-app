@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { deleteFile } from "@inrupt/solid-client";
 import { useGoogleLogin } from "@react-oauth/google";
 import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
@@ -101,6 +101,21 @@ export default function App({ embedded = false, webIdOverride = null }: AppProps
   });
 
   const [scopeStr, setScopeStr] = useState<string>(() => scopesFromSelection(metricSel));
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+
+    if (embedded) {
+      document.body.classList.remove("solid-health-standalone");
+      return;
+    }
+
+    document.body.classList.add("solid-health-standalone");
+
+    return () => {
+      document.body.classList.remove("solid-health-standalone");
+    };
+  }, [embedded]);
 
   useEffect(() => {
     let disposed = false;

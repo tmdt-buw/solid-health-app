@@ -9,6 +9,12 @@ html, body, #root {
   height: 100%;
 }
 
+@media (min-width: 900px) {
+  body.solid-health-standalone {
+    zoom: 0.7;
+  }
+}
+
 .app-shell{
   max-width: 1120px;
   margin: 0 auto;
