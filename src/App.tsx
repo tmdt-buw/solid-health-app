@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import {
-  login,
-  handleIncomingRedirect,
-  getDefaultSession,
-} from "@inrupt/solid-client-authn-browser";
 import { deleteFile } from "@inrupt/solid-client";
 import { useGoogleLogin } from "@react-oauth/google";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
 
 import CardDashboard from "./components/CardDashboard";
 import BottomNav, { Tab } from "./components/BottomNav";
@@ -23,7 +18,11 @@ import {
   scopesFromSelection,
   MetricKey,
 } from "./auth/fitScopes";
+import session, { restoreSession } from "./solidSession";
 import { appVersion } from "./version";
+import "./index.css";
+import "./tmdt-theme.css";
+import "./App.css";
 import "./auth.css";
 
 const AUTH_BRIDGE_KEY = "__SOLID_DATASPACE_AUTH__";
@@ -44,6 +43,11 @@ type HostAuthBridge = {
   subscribe?: (callback: (state: BridgeState) => void) => () => void;
   login?: (issuer?: string) => Promise<void>;
   logout?: () => Promise<void>;
+};
+
+type AppProps = {
+  embedded?: boolean;
+  webIdOverride?: string | null;
 };
 
 const fileUrl = (base: string, name: string) => `${base}health/${name}`;
@@ -72,7 +76,7 @@ function getHostBridge(): HostAuthBridge | null {
   }
 }
 
-export default function App() {
+export default function App({ embedded = false, webIdOverride = null }: AppProps) {
   const [webId, setWebId] = useState<string | null>(null);
   const [googleToken, setGoogleToken] = useState<string | null>(null);
   const [podBaseUrl, setPodBaseUrl] = useState<string | null>(null);
@@ -139,7 +143,7 @@ export default function App() {
     };
 
     const boot = async () => {
-      const bridge = getHostBridge();
+      const bridge = embedded ? null : getHostBridge();
 
       if (bridge) {
         setEmbeddedMode(true);
@@ -151,10 +155,19 @@ export default function App() {
         return;
       }
 
+      if (embedded) {
+        setEmbeddedMode(true);
+        const nextWebId = webIdOverride || session.info.webId || null;
+        await applyAuthState(
+          { isLoggedIn: Boolean(nextWebId), webId: nextWebId },
+          session.fetch.bind(session)
+        );
+        return;
+      }
+
       setEmbeddedMode(false);
 
-      await handleIncomingRedirect({ restorePreviousSession: true });
-      const session = getDefaultSession();
+      await restoreSession();
 
       if (session.info.isLoggedIn && session.info.webId) {
         await applyAuthState(
@@ -170,7 +183,7 @@ export default function App() {
       disposed = true;
       unsubscribe?.();
     };
-  }, []);
+  }, [embedded, webIdOverride]);
 
   const loadAll = async (
     baseUrl: string,
@@ -230,7 +243,7 @@ export default function App() {
       return;
     }
 
-    await login({
+    await session.login({
       oidcIssuer: issuer,
       redirectUrl: `${window.location.origin}/solid-health-app/`,
       clientName: "Solid Health App",
@@ -249,7 +262,7 @@ export default function App() {
       return;
     }
 
-    await getDefaultSession().logout({ logoutType: "app" });
+    await session.logout({ logoutType: "app" });
     setWebId(null);
     setPodBaseUrl(null);
     setSolidFetch(null);
@@ -358,9 +371,8 @@ export default function App() {
     );
   }
 
-  return (
-    <BrowserRouter basename="/solid-health-app">
-      <div className={`app-shell${embeddedMode ? " app-shell--embedded" : ""}`}>
+  const appContent = (
+    <div className={`app-shell${embeddedMode ? " app-shell--embedded" : ""}`}>
         {!embeddedMode && (
           <div className="app-topbar">
             <div className="app-topbar-left">
@@ -415,8 +427,13 @@ export default function App() {
           />
         </Routes>
 
-        <BottomNav active={activeTab} onChange={setActiveTab} />
-      </div>
-    </BrowserRouter>
+      <BottomNav active={activeTab} onChange={setActiveTab} />
+    </div>
+  );
+
+  return embeddedMode ? (
+    <MemoryRouter initialEntries={["/"]}>{appContent}</MemoryRouter>
+  ) : (
+    <BrowserRouter basename="/solid-health-app">{appContent}</BrowserRouter>
   );
 }

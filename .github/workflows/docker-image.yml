@@ -1,4 +1,4 @@
-name: Docker Hub
+name: Docker Hub and npm Package
 
 on:
   push:
@@ -7,16 +7,141 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@hoelk-f"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Prepare package version
+        id: package-version
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const { execSync } = require('child_process');
+          const fs = require('fs');
+
+          const pkgPath = './package.json';
+          const lockPath = './package-lock.json';
+          const versionPath = './src/version.ts';
+          const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+          const lock = fs.existsSync(lockPath)
+            ? JSON.parse(fs.readFileSync(lockPath, 'utf8'))
+            : null;
+
+          const parse = (v) => v.split('.').map((n) => parseInt(n, 10));
+          const cmp = (a, b) => {
+            const pa = parse(a);
+            const pb = parse(b);
+            for (let i = 0; i < 3; i += 1) {
+              const da = Number.isFinite(pa[i]) ? pa[i] : 0;
+              const db = Number.isFinite(pb[i]) ? pb[i] : 0;
+              if (da > db) return 1;
+              if (da < db) return -1;
+            }
+            return 0;
+          };
+
+          let latest = '';
+          try {
+            latest = execSync(
+              'npm view @hoelk-f/solid-health-app version --registry https://npm.pkg.github.com',
+              { encoding: 'utf8' }
+            ).trim();
+          } catch {
+            latest = '';
+          }
+
+          let next = pkg.version;
+          if (latest) {
+            console.log(`Published version: ${latest}`);
+            if (cmp(next, latest) <= 0) {
+              const parts = parse(latest);
+              next = `${parts[0] || 0}.${parts[1] || 0}.${(parts[2] || 0) + 1}`;
+            }
+          }
+
+          console.log(`Package version for this build: ${next}`);
+          pkg.version = next;
+          fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n');
+          if (lock) {
+            lock.name = pkg.name;
+            lock.version = next;
+            if (lock.packages && lock.packages['']) {
+              lock.packages[''].name = pkg.name;
+              lock.packages[''].version = next;
+            }
+            fs.writeFileSync(lockPath, JSON.stringify(lock, null, 2) + '\n');
+          }
+          fs.writeFileSync(versionPath, `export const appVersion = "${next}";\n`);
+          NODE
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          echo "package_version=$PACKAGE_VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build library
+        run: npm run build:lib
+
+      - name: Publish package
+        run: npm publish ./dist
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Build app
+        run: npm run build:app
+
       - uses: docker/setup-buildx-action@v3
+
       - uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
           push: true
           tags: son1i/solid-health-app:latest
+
+      - name: Trigger solid-dataspace-manager rebuild
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          if [ -z "$NPM_TOKEN" ]; then
+            echo "Missing secret NPM_TOKEN" >&2
+            exit 1
+          fi
+
+          PACKAGE_VERSION="${{ steps.package-version.outputs.package_version }}"
+
+          for attempt in $(seq 1 12); do
+            PUBLISHED_VERSION=$(npm view @hoelk-f/solid-health-app version --registry https://npm.pkg.github.com 2>/dev/null || true)
+            if [ "$PUBLISHED_VERSION" = "$PACKAGE_VERSION" ]; then
+              break
+            fi
+
+            if [ "$attempt" -eq 12 ]; then
+              echo "Published package version did not become visible in time. Expected $PACKAGE_VERSION, got ${PUBLISHED_VERSION:-<empty>}." >&2
+              exit 1
+            fi
+
+            sleep 10
+          done
+
+          curl --fail-with-body -L \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${NPM_TOKEN}" \
+            https://api.github.com/repos/hoelk-f/solid-dataspace-manager/dispatches \
+            -d "{\"event_type\":\"solid-health-app-released\",\"client_payload\":{\"package\":\"@hoelk-f/solid-health-app\",\"version\":\"${PACKAGE_VERSION}\"}}"

@@ -1,14 +1,10 @@
 //index.tsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-import "./tmdt-theme.css";
-import "./App.css";
-import "./auth.css";
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
