@@ -36,26 +36,41 @@ let currentSession: SolidSessionLike = new Session(
   },
   "solid-health-app"
 );
+let restorePromise: Promise<void> | null = null;
 
 export function setSession(nextSession: SolidSessionLike) {
   if (!nextSession) return;
   currentSession = nextSession;
+  restorePromise = null;
 }
 
 export async function restoreSession() {
   if (typeof window === "undefined") return;
 
-  if (typeof currentSession.handleIncomingRedirect === "function") {
-    await currentSession.handleIncomingRedirect({
-      url: window.location.href,
-      restorePreviousSession: true,
-    });
+  if (restorePromise) {
+    await restorePromise;
     return;
   }
 
-  await handleIncomingRedirect({
-    restorePreviousSession: true,
-  });
+  restorePromise = (async () => {
+    if (typeof currentSession.handleIncomingRedirect === "function") {
+      await currentSession.handleIncomingRedirect({
+        url: window.location.href,
+        restorePreviousSession: true,
+      });
+      return;
+    }
+
+    await handleIncomingRedirect({
+      restorePreviousSession: true,
+    });
+  })();
+
+  try {
+    await restorePromise;
+  } finally {
+    restorePromise = null;
+  }
 }
 
 export { currentSession as session };
