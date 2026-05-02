@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { deleteFile } from "@inrupt/solid-client";
 import { useGoogleLogin } from "@react-oauth/google";
 import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
@@ -200,10 +200,10 @@ export default function App({ embedded = false, webIdOverride = null }: AppProps
     };
   }, [embedded, webIdOverride]);
 
-  const loadAll = async (
+  const loadAll = useCallback(async (
     baseUrl: string,
     fetcher: SolidFetch,
-    sel: Partial<Record<MetricKey, boolean>> = metricSel
+    sel: Partial<Record<MetricKey, boolean>>
   ) => {
     const [s, c, sl, hr, wg] = await Promise.all([
       sel.steps
@@ -228,7 +228,7 @@ export default function App({ embedded = false, webIdOverride = null }: AppProps
     setSleep(sl);
     setHeartRates(hr);
     setWeight(wg);
-  };
+  }, []);
 
   useEffect(() => {
     if (!webId || !podBaseUrl || !googleToken || !solidFetch) return;
@@ -242,7 +242,7 @@ export default function App({ embedded = false, webIdOverride = null }: AppProps
 
       await loadAll(podBaseUrl, solidFetch, metricSel);
     })();
-  }, [webId, podBaseUrl, googleToken, metricSel, solidFetch]);
+  }, [webId, podBaseUrl, googleToken, metricSel, solidFetch, loadAll]);
 
   const handleLogin = async (issuerInput?: string) => {
     const issuer =

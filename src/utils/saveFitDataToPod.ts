@@ -1,7 +1,5 @@
 import { overwriteFile } from "@inrupt/solid-client";
 
-const NS = "http://example.org/health#";
-
 const getFileUrl = (podBaseUrl: string, filename: string) =>
   `${podBaseUrl}health/${filename}`;
 
