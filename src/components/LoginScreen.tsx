@@ -6,7 +6,7 @@ type Props = {
 };
 
 const PROVIDERS = [
-  { label: "TMDT Solid", url: "https://tmdt-solid-community-server.de", note: "Recommended" },
+  { label: "TMDT Solid", url: "https://solid-community-server.tmdt.info", note: "Recommended" },
   { label: "Solid Community", url: "https://solidcommunity.net", note: "Public community server" },
 ];
 
@@ -62,8 +62,8 @@ const LoginScreen: React.FC<Props> = ({ onSolidLogin }) => {
                   <span className="step-num">1</span>
                   <p>
                     Visit{" "}
-                    <a href="https://tmdt-solid-community-server.de" target="_blank" rel="noreferrer">
-                      tmdt-solid-community-server.de
+                    <a href="https://solid-community-server.tmdt.info" target="_blank" rel="noreferrer">
+                      solid-community-server.tmdt.info
                     </a>{" "}
                     or any other Solid Pod Provider.
                   </p>
