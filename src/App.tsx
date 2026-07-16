@@ -20,10 +20,12 @@ import {
 } from "./auth/fitScopes";
 import session, { restoreSession } from "./solidSession";
 import { appVersion } from "./version";
+import { I18nProvider, LanguageSelect } from "./i18n";
 import "./index.css";
 import "./tmdt-theme.css";
 import "./App.css";
 import "./auth.css";
+import "./LanguageSelect.css";
 
 const AUTH_BRIDGE_KEY = "__SOLID_DATASPACE_AUTH__";
 
@@ -40,6 +42,9 @@ type HostAuthBridge = {
   isReady?: boolean;
   getState: () => BridgeState;
   getFetch: () => SolidFetch;
+  getLanguage?: () => string;
+  setLanguage?: (language: string) => Promise<void>;
+  subscribeLanguage?: (callback: (language: string) => void) => () => void;
   subscribe?: (callback: (state: BridgeState) => void) => () => void;
   login?: (issuer?: string) => Promise<void>;
   logout?: () => Promise<void>;
@@ -48,6 +53,7 @@ type HostAuthBridge = {
 type AppProps = {
   embedded?: boolean;
   webIdOverride?: string | null;
+  language?: string | null;
 };
 
 const fileUrl = (base: string, name: string) => `${base}health/${name}`;
@@ -76,7 +82,11 @@ function getHostBridge(): HostAuthBridge | null {
   }
 }
 
-export default function App({ embedded = false, webIdOverride = null }: AppProps) {
+export default function App({
+  embedded = false,
+  webIdOverride = null,
+  language = null,
+}: AppProps) {
   const [webId, setWebId] = useState<string | null>(null);
   const [googleToken, setGoogleToken] = useState<string | null>(null);
   const [podBaseUrl, setPodBaseUrl] = useState<string | null>(null);
@@ -344,9 +354,13 @@ export default function App({ embedded = false, webIdOverride = null }: AppProps
     setTimeout(() => loginWithGoogle(), 0);
   };
 
+  const renderWithI18n = (content: React.ReactNode) => (
+    <I18nProvider language={language}>{content}</I18nProvider>
+  );
+
   if (!webId) {
     if (embeddedMode) {
-      return (
+      return renderWithI18n(
         <div className="auth-shell">
           <div className="auth-card">
             <h2>Solid login is managed by Solid Dataspace</h2>
@@ -359,12 +373,18 @@ export default function App({ embedded = false, webIdOverride = null }: AppProps
       );
     }
 
-    return <LoginScreen onSolidLogin={handleLogin} />;
+    return renderWithI18n(
+      <>
+        <LanguageSelect className="language-select--standalone" />
+        <LoginScreen onSolidLogin={handleLogin} />
+      </>
+    );
   }
 
   if (webId && !podBaseUrl && providerError) {
-    return (
+    return renderWithI18n(
       <div className="auth-shell">
+        {!embeddedMode && <LanguageSelect className="language-select--standalone" />}
         <div className="auth-card">
           <h2>Provider detected, but Pod URL could not be resolved</h2>
           <p>{providerError}</p>
@@ -377,12 +397,15 @@ export default function App({ embedded = false, webIdOverride = null }: AppProps
   }
 
   if (webId && !googleToken) {
-    return (
-      <GoogleConnectScreen
-        initial={metricSel}
-        onCancel={handleLogout}
-        onConfirm={startGoogleLoginWith}
-      />
+    return renderWithI18n(
+      <>
+        {!embeddedMode && <LanguageSelect className="language-select--standalone" />}
+        <GoogleConnectScreen
+          initial={metricSel}
+          onCancel={handleLogout}
+          onConfirm={startGoogleLoginWith}
+        />
+      </>
     );
   }
 
@@ -395,6 +418,7 @@ export default function App({ embedded = false, webIdOverride = null }: AppProps
             </div>
 
             <div className="app-topbar-right">
+              <LanguageSelect />
               <span className="app-topbar-status">Connected</span>
               <span className="app-topbar-version">{appVersion}</span>
             </div>
@@ -446,9 +470,11 @@ export default function App({ embedded = false, webIdOverride = null }: AppProps
     </div>
   );
 
-  return embeddedMode ? (
-    <MemoryRouter initialEntries={["/"]}>{appContent}</MemoryRouter>
-  ) : (
-    <BrowserRouter basename="/solid-health-app">{appContent}</BrowserRouter>
+  return renderWithI18n(
+    embeddedMode ? (
+      <MemoryRouter initialEntries={["/"]}>{appContent}</MemoryRouter>
+    ) : (
+      <BrowserRouter basename="/solid-health-app">{appContent}</BrowserRouter>
+    )
   );
 }
