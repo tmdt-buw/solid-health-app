@@ -11,7 +11,16 @@ html, body, #root {
 
 @media (min-width: 900px) {
   body.solid-health-standalone {
-    zoom: 0.7;
+    --solid-health-standalone-scale: 0.7;
+    --dataspace-scaled-vw: calc(100vw / var(--solid-health-standalone-scale));
+    --dataspace-scaled-vh: calc(100dvh / var(--solid-health-standalone-scale));
+    width: var(--dataspace-scaled-vw);
+    min-height: var(--dataspace-scaled-vh);
+    zoom: var(--solid-health-standalone-scale);
+  }
+
+  body.solid-health-standalone #root {
+    min-height: var(--dataspace-scaled-vh);
   }
 }
 

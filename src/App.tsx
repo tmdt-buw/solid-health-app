@@ -9,6 +9,8 @@ import MePanel from "./components/MePanel";
 import LoginScreen from "./components/LoginScreen";
 import MetricDetail from "./components/MetricDetail";
 import GoogleConnectScreen from "./components/GoogleConnectScreen";
+import StandaloneFooter from "./components/StandaloneFooter";
+import StandaloneHeader from "./components/StandaloneHeader";
 
 import { loadFitDataFromPod, TimePoint } from "./utils/loadFitDataFromPod";
 import { getBasePodUrl } from "./utils/getBasePodUrl";
@@ -19,13 +21,13 @@ import {
   MetricKey,
 } from "./auth/fitScopes";
 import session, { restoreSession } from "./solidSession";
-import { appVersion } from "./version";
 import { I18nProvider, LanguageSelect } from "./i18n";
 import "./index.css";
 import "./tmdt-theme.css";
 import "./App.css";
 import "./auth.css";
 import "./LanguageSelect.css";
+import "./standalone.css";
 
 const AUTH_BRIDGE_KEY = "__SOLID_DATASPACE_AUTH__";
 
@@ -91,7 +93,7 @@ export default function App({
   const [googleToken, setGoogleToken] = useState<string | null>(null);
   const [podBaseUrl, setPodBaseUrl] = useState<string | null>(null);
   const [solidFetch, setSolidFetch] = useState<SolidFetch | null>(null);
-  const [embeddedMode, setEmbeddedMode] = useState(false);
+  const [embeddedMode, setEmbeddedMode] = useState(embedded);
   const [providerError, setProviderError] = useState<string | null>(null);
 
   const [steps, setSteps] = useState<TimePoint[]>([]);
@@ -358,6 +360,18 @@ export default function App({
     <I18nProvider language={language}>{content}</I18nProvider>
   );
 
+  const standaloneFrame = (content: React.ReactNode) => (
+    <div className="solid-health-standalone-frame">
+      <StandaloneHeader
+        webId={webId || ""}
+        solidFetch={solidFetch || session.fetch.bind(session)}
+        onLogout={handleLogout}
+      />
+      <main className="solid-health-standalone-main">{content}</main>
+      <StandaloneFooter />
+    </div>
+  );
+
   if (!webId) {
     if (embeddedMode) {
       return renderWithI18n(
@@ -374,17 +388,16 @@ export default function App({
     }
 
     return renderWithI18n(
-      <>
-        <LanguageSelect className="language-select--standalone" />
-        <LoginScreen onSolidLogin={handleLogin} />
-      </>
+      <LoginScreen
+        onSolidLogin={handleLogin}
+        languageControl={<LanguageSelect className="language-select--login" />}
+      />
     );
   }
 
   if (webId && !podBaseUrl && providerError) {
-    return renderWithI18n(
+    const providerErrorContent = (
       <div className="auth-shell">
-        {!embeddedMode && <LanguageSelect className="language-select--standalone" />}
         <div className="auth-card">
           <h2>Provider detected, but Pod URL could not be resolved</h2>
           <p>{providerError}</p>
@@ -394,37 +407,26 @@ export default function App({
         </div>
       </div>
     );
+    return renderWithI18n(
+      embeddedMode ? providerErrorContent : standaloneFrame(providerErrorContent)
+    );
   }
 
   if (webId && !googleToken) {
+    const googleConnectContent = (
+      <GoogleConnectScreen
+        initial={metricSel}
+        onCancel={handleLogout}
+        onConfirm={startGoogleLoginWith}
+      />
+    );
     return renderWithI18n(
-      <>
-        {!embeddedMode && <LanguageSelect className="language-select--standalone" />}
-        <GoogleConnectScreen
-          initial={metricSel}
-          onCancel={handleLogout}
-          onConfirm={startGoogleLoginWith}
-        />
-      </>
+      embeddedMode ? googleConnectContent : standaloneFrame(googleConnectContent)
     );
   }
 
   const appContent = (
     <div className={`app-shell${embeddedMode ? " app-shell--embedded" : ""}`}>
-        {!embeddedMode && (
-          <div className="app-topbar">
-            <div className="app-topbar-left">
-              <h1 className="app-topbar-title">Solid Health App</h1>
-            </div>
-
-            <div className="app-topbar-right">
-              <LanguageSelect />
-              <span className="app-topbar-status">Connected</span>
-              <span className="app-topbar-version">{appVersion}</span>
-            </div>
-          </div>
-        )}
-
         <Routes>
           <Route
             path="/"
@@ -470,10 +472,14 @@ export default function App({
     </div>
   );
 
-  return renderWithI18n(
-    embeddedMode ? (
+  if (embeddedMode) {
+    return renderWithI18n(
       <MemoryRouter initialEntries={["/"]}>{appContent}</MemoryRouter>
-    ) : (
+    );
+  }
+
+  return renderWithI18n(
+    standaloneFrame(
       <BrowserRouter basename="/solid-health-app">{appContent}</BrowserRouter>
     )
   );

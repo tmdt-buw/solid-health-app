@@ -1,0 +1,496 @@
+.solid-health-login,
+.solid-health-standalone-frame {
+  --standalone-ink: #0f172a;
+  --standalone-muted: #64748b;
+  --standalone-line: #dbe3f3;
+  box-sizing: border-box;
+  width: 100%;
+  color: var(--standalone-ink);
+  font-family: "Manrope", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+}
+
+.solid-health-login *,
+.solid-health-login *::before,
+.solid-health-login *::after,
+.solid-health-standalone-frame *,
+.solid-health-standalone-frame *::before,
+.solid-health-standalone-frame *::after {
+  box-sizing: border-box;
+}
+
+.solid-health-fa-icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  overflow: visible;
+  vertical-align: -0.125em;
+}
+
+.solid-health-login {
+  min-height: var(--dataspace-scaled-vh, 100vh);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 80px 20px 40px;
+  background:
+    radial-gradient(circle at 20% 20%, #e0edff 0%, transparent 55%),
+    radial-gradient(circle at 80% 0%, #f8f0ff 0%, transparent 45%),
+    #f8fafc;
+}
+
+.solid-health-login__stage {
+  min-height: calc(var(--dataspace-scaled-vh, 100vh) - 32px);
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 16px 0;
+}
+
+.solid-health-login__shell {
+  position: relative;
+  width: min(980px, 100%);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 26px;
+  background: #f8fafc;
+  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.16);
+}
+
+.solid-health-login__shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.18), transparent 55%),
+    radial-gradient(circle at 80% 0%, rgba(14, 165, 233, 0.15), transparent 45%),
+    radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.12), transparent 55%);
+}
+
+.solid-health-login__hero {
+  position: relative;
+  z-index: 1;
+  min-height: 96px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  color: #fff;
+  background: linear-gradient(120deg, #0f172a 0%, #0b4ea2 48%, #fff 100%);
+}
+
+.solid-health-login__brand-icon {
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+}
+
+.solid-health-login__hero h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.solid-health-login .login-visual-band {
+  position: relative;
+  z-index: 1;
+  height: clamp(336px, 42vw, 456px);
+  margin: 14px 16px;
+  overflow: hidden;
+  border-radius: 22px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.28);
+  background:
+    radial-gradient(circle at 48% 35%, rgba(30, 64, 175, 0.28), transparent 42%),
+    linear-gradient(180deg, #0b1220 0%, #0f172a 62%, #111827 100%);
+  box-shadow: inset 0 24px 52px rgba(15, 23, 42, 0.38);
+}
+
+.solid-health-login .login-particle-cloud {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.solid-health-login .login-particle-cloud.is-dragging { cursor: grabbing; }
+.solid-health-login .login-particle-cloud canvas { width: 100%; height: 100%; display: block; }
+
+.solid-health-login .login-particle-cloud::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(286px, 36%);
+  aspect-ratio: 1;
+  pointer-events: none;
+  border: 1px solid rgba(226, 232, 240, 0.16);
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(226, 232, 240, 0.055), rgba(226, 232, 240, 0.025) 58%, transparent 72%);
+  box-shadow: inset 0 0 42px rgba(15, 23, 42, 0.45), 0 0 44px rgba(147, 197, 253, 0.12);
+  transform: translate(-50%, -50%);
+}
+
+.solid-health-login .login-particle-cloud__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  color: #f8fafc;
+  font-size: clamp(13px, 1.55vw, 19px);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-align: center;
+  text-shadow: 0 0 14px rgba(147, 197, 253, 0.62), 0 2px 8px rgba(15, 23, 42, 0.95);
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+.solid-health-login .login-particle-cloud--fallback {
+  background:
+    radial-gradient(circle at 35% 42%, rgba(248, 250, 252, 0.74) 0 2px, transparent 3px),
+    radial-gradient(circle at 64% 56%, rgba(147, 197, 253, 0.66) 0 2px, transparent 3px),
+    linear-gradient(180deg, #0b1220, #111827);
+  background-size: 42px 42px, 54px 54px, auto;
+}
+
+.solid-health-login__card {
+  position: relative;
+  z-index: 1;
+  padding: 20px 22px 17px;
+  background: #fff;
+}
+
+.solid-health-login__fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.solid-health-login__fieldset legend,
+.solid-health-login__custom > label {
+  display: block;
+  margin-bottom: 8px;
+  color: #0f172a;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.solid-health-login__providers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.solid-health-login__provider {
+  appearance: none;
+  width: 100%;
+  min-width: 0;
+  height: 66px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  color: var(--standalone-ink);
+  text-align: left;
+  font: inherit;
+  border: 1px solid var(--standalone-line);
+  border-radius: 18px;
+  background: #f8fbff;
+  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.05);
+  cursor: pointer;
+  transition: transform 80ms ease, background 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.solid-health-login__provider:hover:not(:disabled) { transform: translateY(-2px); background: #f1f6ff; }
+.solid-health-login__provider--active {
+  border-color: #b9d4ff;
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15), 0 14px 30px rgba(15, 23, 42, 0.12);
+}
+
+.solid-health-login__radio {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  margin-top: 2px;
+  border: 2px solid #9ab7e6;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.solid-health-login__provider--active .solid-health-login__radio { border-color: #1d4ed8; }
+.solid-health-login__provider--active .solid-health-login__radio::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #1d4ed8;
+  transform: translate(-50%, -50%);
+}
+
+.solid-health-login__provider-copy { min-width: 0; display: grid; gap: 2px; }
+.solid-health-login__provider-copy strong { color: #0f172a; font-size: 0.9rem; font-weight: 800; }
+.solid-health-login__provider-copy span {
+  overflow: hidden;
+  color: var(--standalone-muted);
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.solid-health-login__custom { margin-top: 12px; }
+.solid-health-login__input-wrap { position: relative; }
+.solid-health-login__input-wrap input {
+  appearance: none;
+  width: 100%;
+  padding: 10px 44px 10px 12px;
+  color: var(--standalone-ink);
+  font: inherit;
+  font-size: 0.88rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  outline: none;
+  background: #fff;
+}
+
+.solid-health-login__input-wrap input:focus {
+  border-color: #b9d4ff;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+.solid-health-login__input-wrap input[aria-invalid="true"] { border-color: #dc6b65; }
+.solid-health-login__clear {
+  appearance: none;
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #64748b;
+  font: inherit;
+  font-size: 1.1rem;
+  line-height: 1;
+  border: 0;
+  border-radius: 10px;
+  background: #f1f5f9;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.solid-health-login__validation { margin: 7px 0 0; color: #af3535; font-size: 0.76rem; }
+.solid-health-login__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 12px;
+  padding: 11px 13px;
+  color: #8f2929;
+  font-size: 0.84rem;
+  border: 1px solid #f2c0c0;
+  border-radius: 11px;
+  background: #fff3f3;
+}
+.solid-health-login__error p { margin: 0; }
+.solid-health-login__error > span {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 900;
+  border-radius: 50%;
+  background: #b83e3e;
+}
+
+.solid-health-login__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.solid-health-login__submit {
+  appearance: none;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0 1.3rem;
+  color: #fff;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 800;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #1d4ed8 0%, #2563eb 100%);
+  box-shadow: 0 12px 26px rgba(37, 99, 235, 0.3);
+  cursor: pointer;
+}
+
+.solid-health-login__provider:focus-visible,
+.solid-health-login__clear:focus-visible,
+.solid-health-login__submit:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.3);
+  outline-offset: 2px;
+}
+.solid-health-login button:disabled,
+.solid-health-login input:disabled { cursor: not-allowed; opacity: 0.6; }
+
+.solid-health-standalone-frame {
+  min-height: var(--dataspace-scaled-vh, 100vh);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f8fafc;
+}
+
+.solid-health-header {
+  width: calc(100% - 40px);
+  min-height: 54px;
+  flex: 0 0 auto;
+  margin: 20px 20px 0;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 18px;
+  background: linear-gradient(120deg, #0f172a 0%, #0b4ea2 55%, #1d4ed8 100%);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+}
+
+.solid-health-header__brand,
+.solid-health-header__actions,
+.solid-health-header__user {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+.solid-health-header__brand { gap: 10px; }
+.solid-health-header__brand .solid-health-fa-icon { width: 18px; color: #facc15; }
+.solid-health-header__brand strong { color: #fff; font-size: 1rem; font-weight: 800; white-space: nowrap; }
+.solid-health-header__actions { justify-content: flex-end; gap: 10px; }
+.solid-health-header__user { gap: 9px; }
+.solid-health-header__avatar {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  overflow: hidden;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+}
+.solid-health-header__avatar--fallback {
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 28px;
+  background: rgba(255, 255, 255, 0.13);
+}
+.solid-health-header__identity {
+  max-width: min(640px, 46vw);
+  overflow: hidden;
+  color: #f8fafc;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.solid-health-header__identity > span { color: rgba(248, 250, 252, 0.9); }
+.solid-health-header__logout {
+  height: 36px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 5px 13px;
+  color: #fff;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 800;
+  white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+}
+.solid-health-header__logout:hover { background: rgba(255, 255, 255, 0.23); }
+
+.solid-health-standalone-main {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: auto;
+}
+.solid-health-standalone-main > .auth-screen { height: 100%; min-height: 560px; }
+.solid-health-standalone-main > .app-shell { min-height: 100%; }
+
+.solid-health-footer {
+  position: relative;
+  min-height: 70px;
+  flex: 0 0 70px;
+  padding: 0 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  border-top: 1px solid #e2e8f0;
+  background: #fff;
+  box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.08);
+  font-size: 0.76rem;
+}
+.solid-health-footer__logos { display: flex; align-items: center; gap: 28px; }
+.solid-health-footer__logo { width: auto; object-fit: contain; }
+.solid-health-footer__logo--buw { height: 42px; }
+.solid-health-footer__logo--tmdt { height: 50px; }
+.solid-health-footer__version {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+.solid-health-standalone-frame .bottom-nav { bottom: 70px; }
+.solid-health-standalone-frame .app-shell { padding-bottom: calc(var(--nav-h) + 14px); }
+
+@media (max-width: 700px) {
+  .solid-health-login { padding: 32px 12px 24px; }
+  .solid-health-login__shell { border-radius: 20px; }
+  .solid-health-login .login-visual-band { height: 312px; margin: 12px; border-radius: 20px; }
+  .solid-health-login__providers { grid-template-columns: 1fr; }
+  .solid-health-login__actions { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+  .solid-health-login__actions .language-select--login { width: 100%; min-width: 0; }
+  .solid-health-header { margin: 10px 10px 0; width: calc(100% - 20px); }
+  .solid-health-header__identity { display: none; }
+  .solid-health-footer { padding: 0 120px 0 12px; }
+  .solid-health-footer__logos { gap: 12px; }
+  .solid-health-footer__logo--buw { height: 32px; }
+  .solid-health-footer__logo--tmdt { height: 38px; }
+  .solid-health-footer__version { right: 10px; font-size: 0.66rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .solid-health-login__provider { transition: none; }
+}
