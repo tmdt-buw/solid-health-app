@@ -22,7 +22,6 @@ import {
 } from "./auth/fitScopes";
 import session, { restoreSession } from "./solidSession";
 import { I18nProvider, LanguageSelect } from "./i18n";
-import "./index.css";
 import "./tmdt-theme.css";
 import "./App.css";
 import "./auth.css";
@@ -357,7 +356,15 @@ export default function App({
   };
 
   const renderWithI18n = (content: React.ReactNode) => (
-    <I18nProvider language={language}>{content}</I18nProvider>
+    <I18nProvider language={language}>
+      <div
+        className={`solid-health-app solid-health-app--${
+          embeddedMode ? "embedded" : "standalone"
+        }`}
+      >
+        {content}
+      </div>
+    </I18nProvider>
   );
 
   const standaloneFrame = (content: React.ReactNode) => (

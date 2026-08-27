@@ -9,18 +9,41 @@ html, body, #root {
   height: 100%;
 }
 
+body.solid-health-standalone {
+  --solid-health-standalone-scale: 0.7;
+  --solid-health-standalone-vh: 100vh;
+  --dataspace-scaled-vh: var(--solid-health-standalone-vh);
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+@supports (height: 100dvh) {
+  body.solid-health-standalone {
+    --solid-health-standalone-vh: 100dvh;
+  }
+}
+
 @media (min-width: 900px) {
   body.solid-health-standalone {
-    --solid-health-standalone-scale: 0.7;
-    --dataspace-scaled-vw: calc(100vw / var(--solid-health-standalone-scale));
-    --dataspace-scaled-vh: calc(100dvh / var(--solid-health-standalone-scale));
-    width: var(--dataspace-scaled-vw);
-    min-height: var(--dataspace-scaled-vh);
+    --solid-health-standalone-vh: calc(100vh / var(--solid-health-standalone-scale));
     zoom: var(--solid-health-standalone-scale);
   }
 
-  body.solid-health-standalone #root {
-    min-height: var(--dataspace-scaled-vh);
+  html.browser-safari body.solid-health-standalone {
+    --solid-health-standalone-vh: 100vh;
+    zoom: 1;
+  }
+
+  @supports (height: 100dvh) {
+    body.solid-health-standalone {
+      --solid-health-standalone-vh: calc(100dvh / var(--solid-health-standalone-scale));
+    }
+
+    html.browser-safari body.solid-health-standalone {
+      --solid-health-standalone-vh: 100dvh;
+    }
   }
 }
 
