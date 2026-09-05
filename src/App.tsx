@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { deleteFile } from "@inrupt/solid-client";
 import { useGoogleLogin } from "@react-oauth/google";
-import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import CardDashboard from "./components/CardDashboard";
 import BottomNav, { Tab } from "./components/BottomNav";
@@ -11,6 +11,7 @@ import MetricDetail from "./components/MetricDetail";
 import GoogleConnectScreen from "./components/GoogleConnectScreen";
 import StandaloneFooter from "./components/StandaloneFooter";
 import StandaloneHeader from "./components/StandaloneHeader";
+import EmbeddedRouterBoundary from "./embed/EmbeddedRouterBoundary";
 
 import { loadFitDataFromPod, TimePoint } from "./utils/loadFitDataFromPod";
 import { getBasePodUrl } from "./utils/getBasePodUrl";
@@ -436,7 +437,7 @@ export default function App({
     <div className={`app-shell${embeddedMode ? " app-shell--embedded" : ""}`}>
         <Routes>
           <Route
-            path="/"
+            index
             element={
               activeTab === "health" && podBaseUrl ? (
                 <CardDashboard
@@ -464,7 +465,7 @@ export default function App({
           />
 
           <Route
-            path="/detail/:metric"
+            path="detail/:metric"
             element={
               <MetricDetail
                 dataMap={{ steps, calories, sleep, heartRate: heartRates, weight }}
@@ -481,7 +482,7 @@ export default function App({
 
   if (embeddedMode) {
     return renderWithI18n(
-      <MemoryRouter initialEntries={["/"]}>{appContent}</MemoryRouter>
+      <EmbeddedRouterBoundary>{appContent}</EmbeddedRouterBoundary>
     );
   }
 

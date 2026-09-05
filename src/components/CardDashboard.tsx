@@ -56,7 +56,7 @@ const CardDashboard: React.FC<Props> = ({
             unit=""
             date={latestDate(steps)}
             data={steps}
-            onClick={() => navigate("/detail/steps")}
+            onClick={() => navigate("detail/steps")}
           />
         )}
 
@@ -67,7 +67,7 @@ const CardDashboard: React.FC<Props> = ({
             unit="kcal"
             date={latestDate(calories)}
             data={calories}
-            onClick={() => navigate("/detail/calories")}
+            onClick={() => navigate("detail/calories")}
           />
         )}
 
@@ -78,7 +78,7 @@ const CardDashboard: React.FC<Props> = ({
             unit="h"
             date={latestDate(sleep)}
             data={sleep}
-            onClick={() => navigate("/detail/sleep")}
+            onClick={() => navigate("detail/sleep")}
           />
         )}
 
@@ -89,7 +89,7 @@ const CardDashboard: React.FC<Props> = ({
             unit="bpm"
             date={latestDate(heartRates)}
             data={heartRates}
-            onClick={() => navigate("/detail/heartRate")}
+            onClick={() => navigate("detail/heartRate")}
           />
         )}
 
@@ -100,7 +100,7 @@ const CardDashboard: React.FC<Props> = ({
             unit="kg"
             date={latestDate(weight)}
             data={weight}
-            onClick={() => navigate("/detail/weight")}
+            onClick={() => navigate("detail/weight")}
           />
         )}
       </div>

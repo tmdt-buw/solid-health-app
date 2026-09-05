@@ -3,14 +3,14 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import LoginScreen from "./components/LoginScreen";
 import SolidHealthAppEmbed from "./embed/SolidHealthAppEmbed";
 
+// CRA's Jest resolver cannot load the package exports of React Router 7 directly.
+// Use its real CommonJS implementation instead of replacing router behavior.
 jest.mock(
   "react-router-dom",
-  () => ({
-    BrowserRouter: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    MemoryRouter: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    Routes: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    Route: () => null,
-  }),
+  () =>
+    jest.requireActual(
+      "../node_modules/react-router/dist/development/index.js"
+    ),
   { virtual: true }
 );
 
