@@ -19,7 +19,7 @@ jest.mock("@react-oauth/google", () => ({
   useGoogleLogin: () => jest.fn(),
 }));
 
-describe("Solid Health standalone login", () => {
+describe("Health App standalone login", () => {
   test("uses the shared compact provider layout", () => {
     render(
       <LoginScreen
@@ -28,7 +28,7 @@ describe("Solid Health standalone login", () => {
       />
     );
 
-    expect(screen.getByRole("heading", { name: "Solid Health App" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Health App" })).toBeInTheDocument();
     expect(screen.getByText("Suggested providers")).toBeInTheDocument();
     const language = screen.getByLabelText("Language");
     const login = screen.getByRole("button", { name: /Login/i });

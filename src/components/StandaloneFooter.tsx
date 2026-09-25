@@ -16,7 +16,7 @@ export default function StandaloneFooter() {
           className="solid-health-footer__logo solid-health-footer__logo--tmdt"
         />
       </div>
-      <div className="solid-health-footer__version">Solid Health App {appVersion}</div>
+      <div className="solid-health-footer__version">Health App {appVersion}</div>
     </footer>
   );
 }

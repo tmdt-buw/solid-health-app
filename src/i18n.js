@@ -27,7 +27,7 @@ const enToDe = {
   Confirm: "Bestätigen",
   Connected: "Verbunden",
   "Loading...": "Wird geladen...",
-  "Solid Health App": "Solid Gesundheits-App",
+  "Health App": "Gesundheits-App",
   "Solid login is managed by Solid Dataspace": "Die Solid-Anmeldung wird von Solid Dataspace verwaltet",
   "Please log in in the main Solid Dataspace application. This app will automatically reuse the same Solid session.":
     "Bitte melde dich in der Hauptanwendung Solid Dataspace an. Diese App nutzt automatisch dieselbe Solid-Sitzung.",
@@ -62,10 +62,10 @@ const enToDe = {
   "Choose which health metrics may be synchronized and stored in your Solid Pod.":
     "Wähle, welche Gesundheitsmetriken synchronisiert und in deinem Solid-Pod gespeichert werden dürfen.",
   "Pod storage": "Pod-Speicher",
-  "Solid Health App will create this folder if it does not exist and store the selected Google Fit data there.":
-    "Solid Health App erstellt diesen Ordner, falls er nicht existiert, und speichert dort die ausgewählten Google-Fit-Daten.",
-  "I agree that Solid Health App may create the health/ folder in my Solid Pod and store the selected metrics there.":
-    "Ich stimme zu, dass Solid Health App den Ordner health/ in meinem Solid-Pod erstellen und die ausgewählten Metriken dort speichern darf.",
+  "Health App will create this folder if it does not exist and store the selected Google Fit data there.":
+    "Die Gesundheits-App erstellt diesen Ordner, falls er nicht existiert, und speichert dort die ausgewählten Google-Fit-Daten.",
+  "I agree that Health App may create the health/ folder in my Solid Pod and store the selected metrics there.":
+    "Ich stimme zu, dass die Gesundheits-App den Ordner health/ in meinem Solid-Pod erstellen und die ausgewählten Metriken dort speichern darf.",
   Connect: "Verbinden",
   "Select Google Fit data": "Google-Fit-Daten auswählen",
   "Disconnect Google Fit? New data will no longer be synchronized.":
@@ -207,6 +207,7 @@ function translateNode(node, language) {
 function applyDocumentTranslations(language) {
   if (typeof document === "undefined" || !document.body) return;
   document.documentElement.lang = normalizeLanguage(language);
+  document.title = translateText(document.title, language);
   translateNode(document.body, language);
 }
 

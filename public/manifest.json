@@ -4,8 +4,8 @@
   "display": "standalone",
   "scope": "/",
   "start_url": ".",
-  "name": "Solid Health App",
-  "short_name": "Solid Health App",
+  "name": "Health App",
+  "short_name": "Health App",
   "theme_color": "#8936FF",
   "background_color": "#2EC6FE",
 

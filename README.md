@@ -1,4 +1,4 @@
-# Solid Health App
+# Health App
 
 
 

@@ -76,10 +76,10 @@ const LoginScreen: React.FC<Props> = ({ onSolidLogin, languageControl = null }) 
             <span className="solid-health-login__brand-icon" aria-hidden="true">
               <FontAwesomeIcon icon="heart-pulse" />
             </span>
-            <h1 id="solid-health-login-title">Solid Health App</h1>
+            <h1 id="solid-health-login-title">Health App</h1>
           </header>
 
-          <LoginParticleCloud label="Solid Health App" />
+          <LoginParticleCloud label="Health App" />
 
           <form className="solid-health-login__card" onSubmit={submit} noValidate>
             <fieldset className="solid-health-login__fieldset" disabled={submitting}>

@@ -54,7 +54,7 @@ export default function StandaloneHeader({ webId, solidFetch, onLogout }: Props)
     <header className="solid-health-header">
       <div className="solid-health-header__brand">
         <FontAwesomeIcon icon="heart-pulse" />
-        <strong>Solid Health App</strong>
+        <strong>Health App</strong>
       </div>
 
       <div className="solid-health-header__actions">

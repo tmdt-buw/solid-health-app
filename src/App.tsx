@@ -273,7 +273,7 @@ export default function App({
     await session.login({
       oidcIssuer: issuer,
       redirectUrl: `${window.location.origin}/solid-health-app/`,
-      clientName: "Solid Health App",
+      clientName: "Health App",
     });
   };
 

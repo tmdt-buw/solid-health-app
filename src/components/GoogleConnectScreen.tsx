@@ -56,7 +56,7 @@ export default function GoogleConnectScreen({ initial, onCancel, onConfirm }: Pr
           <div className="auth-storage__label">Pod storage</div>
           <div className="auth-storage__value">health/</div>
           <div className="auth-storage__hint">
-            Solid Health App will create this folder if it does not exist and store the selected Google Fit data there.
+            Health App will create this folder if it does not exist and store the selected Google Fit data there.
           </div>
           <label className="auth-consent">
             <input
@@ -65,7 +65,7 @@ export default function GoogleConnectScreen({ initial, onCancel, onConfirm }: Pr
               onChange={(event) => setStorageAcknowledged(event.target.checked)}
             />
             <span>
-              I agree that Solid Health App may create the health/ folder in my Solid Pod and store the selected metrics there.
+              I agree that Health App may create the health/ folder in my Solid Pod and store the selected metrics there.
             </span>
           </label>
         </div>

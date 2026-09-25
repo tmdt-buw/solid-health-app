@@ -209,7 +209,7 @@ jobs:
           for attempt in $(seq 1 60); do
             if PUBLISHED_VERSION=$(lookup_exact_version "@hoelk-f/solid-health-app@${PACKAGE_VERSION}"); then
               if [ "$PUBLISHED_VERSION" != "$PACKAGE_VERSION" ]; then
-                echo "Registry returned unexpected version ${PUBLISHED_VERSION:-<empty>} for Solid Health ${PACKAGE_VERSION}." >&2
+                echo "Registry returned unexpected version ${PUBLISHED_VERSION:-<empty>} for Health App ${PACKAGE_VERSION}." >&2
                 exit 1
               fi
               break
@@ -219,9 +219,9 @@ jobs:
 
             if [ "$attempt" -eq 60 ]; then
               if [ "$LOOKUP_STATUS" -eq 1 ]; then
-                echo "Solid Health package ${PACKAGE_VERSION} did not become visible in time." >&2
+                echo "Health App package ${PACKAGE_VERSION} did not become visible in time." >&2
               else
-                echo "Solid Health registry lookup kept failing; availability could not be determined." >&2
+                echo "Health App registry lookup kept failing; availability could not be determined." >&2
               fi
               exit 1
             fi
