@@ -67,7 +67,7 @@ export default function StandaloneHeader({ webId, solidFetch, onLogout }: Props)
             </span>
           )}
           <span className="solid-health-header__identity">
-            <strong>{profile.name}</strong>{" "}
+            <strong translate="no">{profile.name}</strong>{" "}
             <span>({webId})</span>
           </span>
         </div>

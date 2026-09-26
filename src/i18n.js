@@ -40,7 +40,7 @@ const enToDe = {
   "Back to provider list": "Zurück zur Anbieter-Liste",
   "Log in with selected provider": "Mit ausgewähltem Anbieter anmelden",
   "Choose your Solid Pod provider": "Wähle deinen Solid-Pod-Anbieter",
-  "No Solid Pod yet?": "Noch kein Solid-Pod?",
+  "No Solid Pod yet?": "Noch keinen Solid-Pod?",
   Recommended: "Empfohlen",
   "Public community server": "Öffentlicher Community-Server",
   "Example using the": "Beispiel mit dem",
@@ -70,8 +70,8 @@ const enToDe = {
   "Select Google Fit data": "Google-Fit-Daten auswählen",
   "Disconnect Google Fit? New data will no longer be synchronized.":
     "Google Fit trennen? Neue Daten werden nicht mehr synchronisiert.",
-  "Solid Logout": "Solid abmelden",
-  "Google Logout": "Google abmelden",
+  "Solid Logout": "Von Solid abmelden",
+  "Google Logout": "Von Google abmelden",
   "Delete data": "Daten löschen",
   Steps: "Schritte",
   Calories: "Kalorien",
@@ -179,12 +179,17 @@ export function translateText(value, language) {
   const body = value.trim();
   const target = normalizeLanguage(language);
   if (target === "de") {
-    return enToDe[body] ? withOriginalWhitespace(value, enToDe[body]) : value;
+    return Object.prototype.hasOwnProperty.call(enToDe, body) ? withOriginalWhitespace(value, enToDe[body]) : value;
   }
-  return deToEn[body] ? withOriginalWhitespace(value, deToEn[body]) : value;
+  return Object.prototype.hasOwnProperty.call(deToEn, body) ? withOriginalWhitespace(value, deToEn[body]) : value;
 }
 
 function translateNode(node, language) {
+  // User data and code are not UI copy. Respect the HTML translation boundary
+  // across embedded apps as well as in the standalone document.
+  // https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/translate
+  const element = node?.nodeType === Node.ELEMENT_NODE ? node : node?.parentElement;
+  if (element?.closest('[translate="no"], .notranslate, [data-i18n-skip], [contenteditable]:not([contenteditable="false"])')) return;
   if (!node) return;
   if (node.nodeType === Node.TEXT_NODE) {
     const next = translateText(node.nodeValue || "", language);
@@ -204,11 +209,13 @@ function translateNode(node, language) {
   node.childNodes.forEach((child) => translateNode(child, language));
 }
 
-function applyDocumentTranslations(language) {
-  if (typeof document === "undefined" || !document.body) return;
+export function applyDocumentTranslations(language, root) {
+  if (typeof document === "undefined") return;
+  const targetRoot = root || document.body;
+  if (!targetRoot) return;
   document.documentElement.lang = normalizeLanguage(language);
   document.title = translateText(document.title, language);
-  translateNode(document.body, language);
+  translateNode(targetRoot, language);
 }
 
 function installDomTranslator(getLanguage) {
