@@ -369,7 +369,7 @@ export default function App({
   );
 
   const standaloneFrame = (content: React.ReactNode) => (
-    <div className="solid-health-standalone-frame">
+    <div className="solid-health-standalone-frame" data-standalone-shell>
       <StandaloneHeader
         webId={webId || ""}
         solidFetch={solidFetch || session.fetch.bind(session)}
@@ -396,10 +396,13 @@ export default function App({
     }
 
     return renderWithI18n(
-      <LoginScreen
-        onSolidLogin={handleLogin}
-        languageControl={<LanguageSelect className="language-select--login" />}
-      />
+      <div data-standalone-shell>
+        <LoginScreen
+          onSolidLogin={handleLogin}
+          languageControl={<LanguageSelect className="language-select--login" />}
+        />
+        <StandaloneFooter />
+      </div>
     );
   }
 

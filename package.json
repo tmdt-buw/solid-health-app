@@ -1,6 +1,6 @@
 {
   "name": "@hoelk-f/solid-health-app",
-  "version": "0.1.26",
+  "version": "0.1.27",
   "license": "Apache-2.0",
   "private": false,
   "homepage": "/solid-health-app",
@@ -22,6 +22,7 @@
     "react-router-dom": "^7.8.0",
     "react-scripts": "5.0.1",
     "recharts": "^3.1.0",
+    "three": "^0.184.0",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
@@ -68,6 +69,7 @@
     "@babel/preset-typescript": "^7.24.7",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^28.0.2",
+    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.3.1",
     "postcss": "^8.4.49",
     "rollup": "^4.24.0",

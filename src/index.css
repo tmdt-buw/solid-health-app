@@ -10,7 +10,7 @@ html, body, #root {
 }
 
 body.solid-health-standalone {
-  --solid-health-standalone-scale: 0.7;
+  --solid-health-standalone-scale: 1;
   --solid-health-standalone-vh: 100vh;
   --dataspace-scaled-vh: var(--solid-health-standalone-vh);
   min-height: 100vh;

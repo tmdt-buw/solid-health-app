@@ -1,22 +1,8 @@
 import React from "react";
+import Footer from "../standalone/StandaloneFooter";
 import { appVersion } from "../version";
-
+import { useI18n } from "../i18n";
 export default function StandaloneFooter() {
-  return (
-    <footer className="solid-health-footer">
-      <div className="solid-health-footer__logos" aria-label="Project partners">
-        <img
-          src="/semantic-data-catalog/assets/images/Logo_BUW.png"
-          alt="Logo BUW"
-          className="solid-health-footer__logo solid-health-footer__logo--buw"
-        />
-        <img
-          src="/semantic-data-catalog/assets/images/Logo_TMDT.png"
-          alt="Logo TMDT"
-          className="solid-health-footer__logo solid-health-footer__logo--tmdt"
-        />
-      </div>
-      <div className="solid-health-footer__version">Health App {appVersion}</div>
-    </footer>
-  );
+  const { language } = useI18n();
+  return <Footer title="Health App" version={appVersion} language={language} assetsBase={process.env.PUBLIC_URL || ""} />;
 }

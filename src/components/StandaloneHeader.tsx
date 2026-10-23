@@ -51,13 +51,13 @@ export default function StandaloneHeader({ webId, solidFetch, onLogout }: Props)
   }, [profile.photoUrl, solidFetch]);
 
   return (
-    <header className="solid-health-header">
-      <div className="solid-health-header__brand">
+    <header className="solid-health-header" data-standalone-header>
+      <div className="solid-health-header__brand" data-standalone-brand>
         <FontAwesomeIcon icon="heart-pulse" />
         <strong>Health App</strong>
       </div>
 
-      <div className="solid-health-header__actions">
+      <div className="solid-health-header__actions" data-standalone-actions>
         <div className="solid-health-header__user" title={webId}>
           {photoSrc ? (
             <img className="solid-health-header__avatar" src={photoSrc} alt="" />

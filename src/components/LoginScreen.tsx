@@ -1,7 +1,7 @@
+import LoginParticleCloud from "../standalone/LoginParticleCloud";
 import React, { FormEvent, useMemo, useState } from "react";
 import "../auth.css";
 import FontAwesomeIcon from "./FontAwesomeIcon";
-import LoginParticleCloud from "./LoginParticleCloud";
 
 type Props = {
   onSolidLogin: (issuer?: string) => void | Promise<void>;
@@ -69,10 +69,10 @@ const LoginScreen: React.FC<Props> = ({ onSolidLogin, languageControl = null }) 
   };
 
   return (
-    <main className="solid-health-login">
-      <div className="solid-health-login__stage">
-        <section className="solid-health-login__shell" aria-labelledby="solid-health-login-title">
-          <header className="solid-health-login__hero">
+    <main className="solid-health-login" data-standalone-login>
+      <div className="solid-health-login__stage" data-standalone-login-stage>
+        <section className="solid-health-login__shell" data-standalone-login-card aria-labelledby="solid-health-login-title">
+          <header className="solid-health-login__hero" data-standalone-login-heading>
             <span className="solid-health-login__brand-icon" aria-hidden="true">
               <FontAwesomeIcon icon="heart-pulse" />
             </span>
@@ -81,7 +81,7 @@ const LoginScreen: React.FC<Props> = ({ onSolidLogin, languageControl = null }) 
 
           <LoginParticleCloud label="Health App" />
 
-          <form className="solid-health-login__card" onSubmit={submit} noValidate>
+          <form className="solid-health-login__card" data-standalone-login-form onSubmit={submit} noValidate>
             <fieldset className="solid-health-login__fieldset" disabled={submitting}>
               <legend>Suggested providers</legend>
               <div className="solid-health-login__providers">
@@ -160,7 +160,7 @@ const LoginScreen: React.FC<Props> = ({ onSolidLogin, languageControl = null }) 
               </div>
             )}
 
-            <footer className="solid-health-login__actions">
+            <footer className="solid-health-login__actions" data-standalone-login-actions>
               {languageControl}
               <button
                 className="solid-health-login__submit"

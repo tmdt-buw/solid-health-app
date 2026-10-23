@@ -8,6 +8,11 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { markSafariBrowser } from './safariDetection';
 
+
+import "./standalone/shell.css";
+import "./standalone/layout.css";
+document.body.classList.add("dataspace-standalone");
+
 markSafariBrowser();
 
 const root = ReactDOM.createRoot(document.getElementById('root')!);
