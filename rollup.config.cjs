@@ -10,9 +10,7 @@ const external = (id) =>
   id === "react-router-dom" ||
   id === "@react-oauth/google" ||
   id === "recharts" ||
-  id.startsWith("@inrupt/") ||
-  id.startsWith("@mui/") ||
-  id.startsWith("@emotion/");
+  id.startsWith("@inrupt/");
 
 module.exports = {
   input: "src/embed/index.ts",

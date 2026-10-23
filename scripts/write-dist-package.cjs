@@ -5,13 +5,9 @@ const rootDir = path.resolve(__dirname, "..");
 const pkg = JSON.parse(fs.readFileSync(path.join(rootDir, "package.json"), "utf8"));
 const distDir = path.join(rootDir, "dist");
 const runtimeDependencyNames = [
-  "@emotion/react",
-  "@emotion/styled",
   "@inrupt/solid-client",
   "@inrupt/solid-client-authn-browser",
   "@inrupt/vocab-common-rdf",
-  "@mui/material",
-  "@mui/system",
   "@react-oauth/google",
   "react-router-dom",
   "recharts",
