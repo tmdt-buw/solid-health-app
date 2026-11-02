@@ -1,12 +1,12 @@
 {
   "name": "@hoelk-f/solid-health-app",
-  "version": "0.1.27",
+  "version": "0.1.28",
   "license": "Apache-2.0",
   "private": false,
   "homepage": "/solid-health-app",
   "dependencies": {
     "@inrupt/solid-client": "1.30.2",
-    "@inrupt/solid-client-authn-browser": "2.3.0",
+    "@inrupt/solid-client-authn-browser": "5.0.3",
     "@inrupt/vocab-common-rdf": "1.0.5",
     "@react-oauth/google": "^0.12.2",
     "@testing-library/dom": "^10.4.0",
@@ -101,6 +101,15 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "engines": {
+    "node": "^22.0.0 || ^24.0.0"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(@inrupt/|jose/|uuid/))",
+      "^.+\\.module\\.(css|sass|scss)$"
     ]
   }
 }
